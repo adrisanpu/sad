@@ -8,12 +8,12 @@ class EditableBufferedReader extends BufferedReader{
 	}
 
 	public void setRaw() throws IOException{
-		String[] command = {"/bin/sh", "-c", "stty raw </dev/tty"};
+		String[] command = {"/bin/sh", "-c", "stty -echo raw </dev/tty"};
 		Process process = Runtime.getRuntime().exec(command);
 	}
 
 	public void unsetRaw() throws IOException{
-		String[] command = {"/bin/sh", "-c", "stty -raw </dev/tty"};
+		String[] command = {"/bin/sh", "-c", "stty echo cooked </dev/tty"};
 		Process process = Runtime.getRuntime().exec(command);
 	}
 
