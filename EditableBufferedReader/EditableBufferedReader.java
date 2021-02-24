@@ -30,6 +30,6 @@ class EditableBufferedReader extends BufferedReader{
 		this.setRaw();
 		l.addChar((char)this.read());
 		this.unsetRaw();
-		return l.buffer;
+		return l.buffer.toString();
 	}
 }
