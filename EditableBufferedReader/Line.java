@@ -10,13 +10,13 @@ public class Line{
 		row = 0;
 	}
 
-	public void addChar(char c, int cursor){
-		this.buffer.charAt(cursor) = c;
+	public void addChar(char c){
+		this.buffer.charAt(this.cursor) = c;
 		this.moveCursorRight();
 	}
 
 	public void delChar(char c, int cursor){
-		this.buffer.charAt(cursor-1) = '';
+		this.buffer.charAt(this.cursor-1) = '\0';
 		this.moveCursorLeft();		
 	}
 	

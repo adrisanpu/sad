@@ -1,6 +1,5 @@
 
 import java.io.*;
-import EditableBufferedReader;
 
 class TestReadLine{
   public static void main(String[] args) {
@@ -8,11 +7,8 @@ class TestReadLine{
 	String str = null;
 
 	try {
-		in.setRaw();
 		str = in.readLine();
 	} catch (IOException e) { e.printStackTrace(); }
 	System.out.println("\nline is: " + str);
-
-	
   }
 }
