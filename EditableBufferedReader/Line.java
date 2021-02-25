@@ -34,4 +34,10 @@ public class Line{
 		Process process = Runtime.getRuntime().exec(command);
 		this.cursor --;
 	}
+
+	public void moveCursorBegin() throws IOException{
+	}
+
+	public void moveCursorEnd() throws IOException{
+	}
 }
