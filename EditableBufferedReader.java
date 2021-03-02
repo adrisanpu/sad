@@ -40,12 +40,13 @@ class EditableBufferedReader extends BufferedReader{
 				case 62:	//utilitzo caracter > per anar final
 					result = END;
 					break;
-				case 27:
-					int aux = in.read();
-					aux = in.read();
-					if((char)aux == 'D') result = LEFT;
-					else if((char)aux == 'C') result = RIGHT;
-					else result = 0;
+				case 27:	//seq ESC
+					if(in.read() == 91){	//seq [ 
+						int aux = in.read();
+						if(aux == 'D') result = LEFT;
+						else if(aux == 'C') result = RIGHT;
+						else result = 0;
+					}
 					break;
 					
 				default:
@@ -85,7 +86,6 @@ class EditableBufferedReader extends BufferedReader{
 						l.addChar((char)input);
 						break;
 				}
-			l.showLine();
 			}
 		}finally{
 			this.unsetRaw();
