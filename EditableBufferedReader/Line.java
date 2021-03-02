@@ -13,6 +13,12 @@ public class Line{
 		row = 0;
 	}
 
+	public void showLine() throws IOException{
+		String[] command = {"/bin/sh", "-c", "\033[M >/dev/tty"};
+		Process process = Runtime.getRuntime().exec(command);
+		System.out.print(this.buffer.toString());	
+	}
+
 	public void addChar(char c) throws IOException{
 		this.buffer.insert(this.cursor, c);
 		this.moveCursorRight();
@@ -24,13 +30,13 @@ public class Line{
 	}
 	
 	public void moveCursorRight() throws IOException{
-		String[] command = {"/bin/sh", "-c", "\033[1C </dev/tty"};
+		String[] command = {"/bin/sh", "-c", "\033[1C >/dev/tty"};
 		Process process = Runtime.getRuntime().exec(command);
 		this.cursor ++;
 	}
 
 	public void moveCursorLeft() throws IOException{
-		String[] command = {"/bin/sh", "-c", "\033[1D </dev/tty"};
+		String[] command = {"/bin/sh", "-c", "\033[1D >/dev/tty"};
 		Process process = Runtime.getRuntime().exec(command);
 		this.cursor --;
 	}

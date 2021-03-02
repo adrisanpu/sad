@@ -5,11 +5,11 @@ import static java.lang.System.in;
 
 class EditableBufferedReader extends BufferedReader{
 
-	public final static int RIGHT = 0;
-	public final static int LEFT = 1;
-	public final static int END = 2;
-	public final static int BEGIN = 3;
-	public final static int DELETE = 4;
+	public final static int RIGHT = 256;
+	public final static int LEFT = 257;
+	public final static int END = 258;
+	public final static int BEGIN = 259;
+	public final static int DELETE = 260;
 
 	public EditableBufferedReader(Reader in){
 		super(in);
@@ -27,11 +27,34 @@ class EditableBufferedReader extends BufferedReader{
 
 	@Override
 	public int read() throws IOException{
-		int ch;
-		do {
+		int ch, result = 261;
+		try{
 			ch = in.read();
-		} while (ch != '\r');
-		return ch;
+			switch(ch){
+				case 127:
+					result = DELETE;
+					break;
+				case 60:	//utilitzo caracter < per anar inici
+					result = BEGIN;
+					break;
+				case 62:	//utilitzo caracter > per anar final
+					result = END;
+					break;
+				case 27:
+					int aux = in.read();
+					aux = in.read();
+					if((char)aux == 'D') result = LEFT;
+					else if((char)aux == 'C') result = RIGHT;
+					else result = 0;
+					break;
+					
+				default:
+					result = ch;
+					break;
+
+			}
+		}catch (IOException e) { e.printStackTrace(); }
+		return result;
 	}
 
 	@Override
@@ -41,6 +64,7 @@ class EditableBufferedReader extends BufferedReader{
 		this.setRaw();
 		try{
 			while ((input = read()) != '\r'){
+				System.out.print(input);
 				switch(input){
 					case RIGHT:
 						l.moveCursorRight();
@@ -61,6 +85,7 @@ class EditableBufferedReader extends BufferedReader{
 						l.addChar((char)input);
 						break;
 				}
+			l.showLine();
 			}
 		}finally{
 			this.unsetRaw();
