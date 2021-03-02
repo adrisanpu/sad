@@ -5,11 +5,11 @@ import static java.lang.System.in;
 
 class EditableBufferedReader extends BufferedReader{
 
-	public final static int RIGHT = 256;
-	public final static int LEFT = 257;
-	public final static int END = 258;
-	public final static int BEGIN = 259;
-	public final static int DELETE = 260;
+	public final static int RIGHT = 7;
+	public final static int LEFT = 8;
+	public final static int END = 9;
+	public final static int BEGIN = 10;
+	public final static int DELETE = 11;
 
 	public EditableBufferedReader(Reader in){
 		super(in);
@@ -27,7 +27,7 @@ class EditableBufferedReader extends BufferedReader{
 
 	@Override
 	public int read() throws IOException{
-		int ch, result = 261;
+		int ch, result = 0;
 		try{
 			ch = in.read();
 			switch(ch){
@@ -40,12 +40,13 @@ class EditableBufferedReader extends BufferedReader{
 				case 62:	//utilitzo caracter > per anar final
 					result = END;
 					break;
-				case 27:
-					int aux = in.read();
-					aux = in.read();
-					if((char)aux == 'D') result = LEFT;
-					else if((char)aux == 'C') result = RIGHT;
-					else result = 0;
+				case 27:	//seq ESC
+					if(in.read() == 91){	//seq [ 
+						int aux = in.read();
+						if(aux == 'D') result = LEFT;
+						else if(aux == 'C') result = RIGHT;
+						else result = 0;
+					}
 					break;
 					
 				default:
@@ -64,13 +65,15 @@ class EditableBufferedReader extends BufferedReader{
 		this.setRaw();
 		try{
 			while ((input = read()) != '\r'){
-				System.out.print(input);
+				//System.out.print(input);
 				switch(input){
 					case RIGHT:
 						l.moveCursorRight();
+						System.out.print("\033[C");
 						break;
 					case LEFT:
 						l.moveCursorLeft();
+						System.out.print("\033[D");
 						break;
 					case BEGIN:
 						l.moveCursorBegin();
@@ -80,12 +83,16 @@ class EditableBufferedReader extends BufferedReader{
 						break;
 					case DELETE:
 						l.delChar();
+						l.moveCursorLeft();
+						System.out.print("\033[D");
+						System.out.print("\033[P");
 						break;
 					default:
 						l.addChar((char)input);
+						System.out.print((char)input);
+						l.moveCursorRight();
 						break;
 				}
-			l.showLine();
 			}
 		}finally{
 			this.unsetRaw();
