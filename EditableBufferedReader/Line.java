@@ -8,33 +8,45 @@ import java.io.*;
 public class Line{
 	public StringBuilder buffer;
 	public int cursor;
+	public int finalColumn;
 	public int row;
 	
 	public Line(){
 		buffer = new StringBuilder("");
 		cursor = 0;
+		finalColumn = 0;
 		row = 0;
 	}
 
 	public void addChar(char c) throws IOException{
-		this.buffer.insert(this.cursor, c);
+		buffer.insert(cursor, c);
+		cursor ++;
+		if(cursor > finalColumn) finalColumn = cursor;
 	}
 
 	public void delChar() throws IOException{
-		this.buffer.delete(this.cursor-1, this.cursor);
+		buffer.delete(cursor-1, cursor);
+		finalColumn --;
+		
 	}
 	
-	public void moveCursorRight() throws IOException{	
-		this.cursor ++;
+
+	public void moveCursorRight() throws IOException{
+		if(cursor == finalColumn){
+			addChar(' ');
+		}
+		moveCursorRight();
 	}
 
 	public void moveCursorLeft() throws IOException{
-		this.cursor --;
+		if(cursor > 0) cursor --;	
 	}
 
 	public void moveCursorBegin() throws IOException{
+		cursor = 0;
 	}
 
 	public void moveCursorEnd() throws IOException{
+		cursor = finalColumn;
 	}
 }

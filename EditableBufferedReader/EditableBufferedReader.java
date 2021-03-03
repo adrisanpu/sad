@@ -76,9 +76,15 @@ class EditableBufferedReader extends BufferedReader{
 						System.out.print("\033[D");
 						break;
 					case BEGIN:
+						for(int i = l.cursor; i >= 0; i--){
+							System.out.print("\033[D");
+						}
 						l.moveCursorBegin();
 						break;
 					case END:
+						for(int i = l.cursor; i <= l.finalColumn; i++){
+							System.out.print("\033[C");
+						}
 						l.moveCursorEnd();
 						break;
 					case DELETE:
@@ -88,9 +94,15 @@ class EditableBufferedReader extends BufferedReader{
 						System.out.print("\033[P");
 						break;
 					default:
+						/*if(l.cursor < l.finalColumn){
+							this.unsetRaw();
+							String cols = Integer.toString(l.finalColumn-l.cursor);
+							//la comanda xterm que veu es CSI[10S (scroll 10 files) no CSI[10SPA
+(shift 10 cols right)							System.out.print("\033["+cols+"SPA");
+							this.setRaw();
+						} */
 						l.addChar((char)input);
 						System.out.print((char)input);
-						l.moveCursorRight();
 						break;
 				}
 			}
