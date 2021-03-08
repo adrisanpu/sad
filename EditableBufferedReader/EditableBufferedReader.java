@@ -10,9 +10,16 @@ class EditableBufferedReader extends BufferedReader{
 	public final static int END = 9;
 	public final static int BEGIN = 10;
 	public final static int DELETE = 11;
+	public final static int SUPR = 12;
+	public final static int CHANGE_INPUT_MODE = 15;
+	public boolean inputMode = false; //mode insercio
+	public int cols;
+	public ConsoleProcess c
 
 	public EditableBufferedReader(Reader in){
 		super(in);
+		this.c = new ConsoleProcess();
+		this.cols = c.getConsoleWidth(); 
 	}
 
 	public void setRaw() throws IOException{
@@ -24,6 +31,7 @@ class EditableBufferedReader extends BufferedReader{
 		String[] command = {"/bin/sh", "-c", "stty echo cooked </dev/tty"};
 		Process process = Runtime.getRuntime().exec(command);
 	}
+	
 
 	@Override
 	public int read() throws IOException{
@@ -33,6 +41,12 @@ class EditableBufferedReader extends BufferedReader{
 			switch(ch){
 				case 127:
 					result = DELETE;
+					break;
+				case 38:	//utilitzo caracter & per suprimir
+					result = SUPR;
+					break;
+				case 37:	//utilitzo caracter % per mode insercio/sobre-escriptura
+					result = CHANGE_INPUT_MODE;
 					break;
 				case 60:	//utilitzo caracter < per anar inici
 					result = BEGIN;
@@ -67,6 +81,10 @@ class EditableBufferedReader extends BufferedReader{
 			while ((input = read()) != '\r'){
 				//System.out.print(input);
 				switch(input){
+					case CHANGE_INPUT_MODE:
+						if(inputMode) inputMode = false;
+						else inputMode = true;
+						break;
 					case RIGHT:
 						l.moveCursorRight();
 						System.out.print("\033[C");
@@ -76,13 +94,13 @@ class EditableBufferedReader extends BufferedReader{
 						System.out.print("\033[D");
 						break;
 					case BEGIN:
-						for(int i = l.cursor; i >= 0; i--){
+						for(int i = l.cursor-1; i >= 0; i--){
 							System.out.print("\033[D");
 						}
 						l.moveCursorBegin();
 						break;
 					case END:
-						for(int i = l.cursor; i <= l.finalColumn; i++){
+						for(int i = l.cursor-1; i <= l.finalColumn; i++){
 							System.out.print("\033[C");
 						}
 						l.moveCursorEnd();
@@ -93,16 +111,27 @@ class EditableBufferedReader extends BufferedReader{
 						System.out.print("\033[D");
 						System.out.print("\033[P");
 						break;
+					case SUPR:
+						if(l.cursor < l.finalColumn){
+							l.suprChar();
+							System.out.print("\033[C");
+							System.out.print("\033[D");
+							System.out.print("\033[P");
+						}
+						break;
 					default:
-						/*if(l.cursor < l.finalColumn){
-							this.unsetRaw();
+						//solucionar inputmode
+						if(l.cursor < l.finalColumn || !inputMode){
 							String cols = Integer.toString(l.finalColumn-l.cursor);
-							//la comanda xterm que veu es CSI[10S (scroll 10 files) no CSI[10SPA
-(shift 10 cols right)							System.out.print("\033["+cols+"SPA");
-							this.setRaw();
-						} */
-						l.addChar((char)input);
-						System.out.print((char)input);
+							System.out.print("\033["+cols+" A");
+							l.addChar((char)input);
+							System.out.print((char)input);
+						}
+						else if(inputMode){
+							l.suprChar();
+							l.addChar((char)input);
+							System.out.print((char)input);
+						}
 						break;
 				}
 			}

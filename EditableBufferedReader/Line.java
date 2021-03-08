@@ -1,6 +1,4 @@
 
-// s'han de posar els pritns a readLine, line nomes es el model i els metodes han de modificar 
-// line, no el terminal.
 
 import java.lang.StringBuilder;
 import java.io.*;
@@ -16,16 +14,24 @@ public class Line{
 		cursor = 0;
 		finalColumn = 0;
 		row = 0;
+		getResultInteger
 	}
 
 	public void addChar(char c) throws IOException{
 		buffer.insert(cursor, c);
 		cursor ++;
 		if(cursor > finalColumn) finalColumn = cursor;
+		if(finalColumn == )
 	}
 
 	public void delChar() throws IOException{
 		buffer.delete(cursor-1, cursor);
+		finalColumn --;
+		
+	}
+
+	public void suprChar() throws IOException{
+		buffer.delete(cursor, cursor+1);
 		finalColumn --;
 		
 	}
@@ -35,7 +41,7 @@ public class Line{
 		if(cursor == finalColumn){
 			addChar(' ');
 		}
-		moveCursorRight();
+		else cursor ++;
 	}
 
 	public void moveCursorLeft() throws IOException{
