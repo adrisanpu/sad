@@ -14,14 +14,12 @@ public class Line{
 		cursor = 0;
 		finalColumn = 0;
 		row = 0;
-		getResultInteger
 	}
 
-	public void addChar(char c) throws IOException{
+	public void addChar(char c, boolean inputMode) throws IOException{
 		buffer.insert(cursor, c);
 		cursor ++;
 		if(cursor > finalColumn) finalColumn = cursor;
-		if(finalColumn == )
 	}
 
 	public void delChar() throws IOException{
@@ -39,7 +37,7 @@ public class Line{
 
 	public void moveCursorRight() throws IOException{
 		if(cursor == finalColumn){
-			addChar(' ');
+			addChar(' ', true);
 		}
 		else cursor ++;
 	}

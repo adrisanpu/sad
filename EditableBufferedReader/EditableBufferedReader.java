@@ -14,7 +14,7 @@ class EditableBufferedReader extends BufferedReader{
 	public final static int CHANGE_INPUT_MODE = 15;
 	public boolean inputMode = false; //mode insercio
 	public int cols;
-	public ConsoleProcess c
+	public ConsoleProcess c;
 
 	public EditableBufferedReader(Reader in){
 		super(in);
@@ -66,7 +66,6 @@ class EditableBufferedReader extends BufferedReader{
 				default:
 					result = ch;
 					break;
-
 			}
 		}catch (IOException e) { e.printStackTrace(); }
 		return result;
@@ -79,7 +78,7 @@ class EditableBufferedReader extends BufferedReader{
 		this.setRaw();
 		try{
 			while ((input = read()) != '\r'){
-				//System.out.print(input);
+				//System.out.print(l.cursor);
 				switch(input){
 					case CHANGE_INPUT_MODE:
 						if(inputMode) inputMode = false;
@@ -100,7 +99,7 @@ class EditableBufferedReader extends BufferedReader{
 						l.moveCursorBegin();
 						break;
 					case END:
-						for(int i = l.cursor-1; i <= l.finalColumn; i++){
+						for(int i = l.cursor; i <= l.finalColumn-1; i++){
 							System.out.print("\033[C");
 						}
 						l.moveCursorEnd();
@@ -120,16 +119,15 @@ class EditableBufferedReader extends BufferedReader{
 						}
 						break;
 					default:
-						//solucionar inputmode
-						if(l.cursor < l.finalColumn || !inputMode){
-							String cols = Integer.toString(l.finalColumn-l.cursor);
-							System.out.print("\033["+cols+" A");
-							l.addChar((char)input);
+						if(!inputMode){
+							String cols = Integer.toString(l.finalColumn-l.cursor-1);
+							System.out.print("\033["+cols+"@");
+							l.addChar((char)input, inputMode);
 							System.out.print((char)input);
 						}
-						else if(inputMode){
+						else{
 							l.suprChar();
-							l.addChar((char)input);
+							l.addChar((char)input, inputMode);
 							System.out.print((char)input);
 						}
 						break;
