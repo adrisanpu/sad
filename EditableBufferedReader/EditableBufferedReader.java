@@ -127,6 +127,7 @@ class EditableBufferedReader extends BufferedReader{
 							System.out.print((char)input);
 						}
 						else{
+							l.suprChar();
 							l.addChar((char)input, overTypeMode);
 							System.out.print((char)input);
 						}
