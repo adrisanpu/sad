@@ -17,10 +17,14 @@ public class Line{
 	}
 
 	public void addChar(char c, boolean overTypeMode) throws IOException{
-		buffer.insert(cursor, c);
+		if(!overTypeMode) {
+			buffer.insert(cursor, c);
+		} else {
+			buffer.setCharAt(cursor,c);
+		}
+		
 		cursor ++;
 		if(cursor > finalColumn) finalColumn = cursor;
-		//else if(!overTypeMode) finalColumn ++;
 	}
 
 	public void delChar() throws IOException{
