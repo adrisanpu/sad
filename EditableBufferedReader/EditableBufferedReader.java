@@ -5,70 +5,70 @@ import static java.lang.System.in;
 
 class EditableBufferedReader extends BufferedReader{
 
-	public final static int RIGHT = 7;
-	public final static int LEFT = 8;
-	public final static int END = 9;
-	public final static int BEGIN = 10;
-	public final static int DELETE = 11;
-	public final static int SUPR = 12;
-	public final static int CHANGE_INPUT_MODE = 15;
-	public boolean overTypeMode;
-	public int maxCols;
+    public final static int RIGHT = 7;
+    public final static int LEFT = 8;
+    public final static int END = 9;
+    public final static int BEGIN = 10;
+    public final static int DELETE = 11;
+    public final static int SUPR = 12;
+    public final static int CHANGE_INPUT_MODE = 15;
+    public boolean overTypeMode;
+    public int maxCols;
 
-	public EditableBufferedReader(Reader in){
-		super(in);
-		this.maxCols = 0;
-		overTypeMode = false;
-	}
+    public EditableBufferedReader(Reader in){
+	super(in);
+	this.maxCols = 0;
+	overTypeMode = false;
+    }
 
-	public void setRaw() throws IOException{
-		String[] command = {"/bin/sh", "-c", "stty -echo raw </dev/tty"};
-		Process process = Runtime.getRuntime().exec(command);
-	}
+    public void setRaw() throws IOException{
+	String[] command = {"/bin/sh", "-c", "stty -echo raw </dev/tty"};
+	Process process = Runtime.getRuntime().exec(command);
+    }
 
-	public void unsetRaw() throws IOException{
-		String[] command = {"/bin/sh", "-c", "stty echo cooked </dev/tty"};
-		Process process = Runtime.getRuntime().exec(command);
-	}
+    public void unsetRaw() throws IOException{
+	String[] command = {"/bin/sh", "-c", "stty echo cooked </dev/tty"};
+	Process process = Runtime.getRuntime().exec(command);
+    }
 	
 
-	@Override
-	public int read() throws IOException{
-		int ch, result = 0;
-		try{
-			ch = in.read();
-			switch(ch){
-				case 127:
-					result = DELETE;
-					break;
-				case 38:	//utilitzo caracter & per suprimir
-					result = SUPR;
-					break;
-				case 37:	//utilitzo caracter % per mode insercio/sobre-escriptura
-					result = CHANGE_INPUT_MODE;
-					break;
-				case 60:	//utilitzo caracter < per anar inici
-					result = BEGIN;
-					break;
-				case 62:	//utilitzo caracter > per anar final
-					result = END;
-					break;
-				case 27:	//seq ESC
-					if(in.read() == 91){	//seq [ 
-						int aux = in.read();
-						if(aux == 'D') result = LEFT;
-						else if(aux == 'C') result = RIGHT;
-						else result = 0;
-					}
-					break;
-					
-				default:
-					result = ch;
-					break;
+    @Override
+    public int read() throws IOException{
+	int ch, result = 0;
+	try{
+	ch = in.read();
+	    switch(ch){
+		case 127:
+			result = DELETE;
+			break;
+		case 38:	//utilitzo caracter & per suprimir
+			result = SUPR;
+			break;
+		case 37:	//utilitzo caracter % per mode insercio/sobre-escriptura
+			result = CHANGE_INPUT_MODE;
+			break;
+		case 60:	//utilitzo caracter < per anar inici
+			result = BEGIN;
+			break;
+		case 62:	//utilitzo caracter > per anar final
+			result = END;
+			break;
+		case 27:	//seq ESC
+			if(in.read() == 91){	//seq [ 
+				int aux = in.read();
+				if(aux == 'D') result = LEFT;
+				else if(aux == 'C') result = RIGHT;
+				else result = 0;
 			}
-		}catch (IOException e) { e.printStackTrace(); }
-		return result;
-	}
+			break;
+			
+		default:
+			result = ch;
+			break;
+	    }
+	}catch (IOException e) { e.printStackTrace(); }
+	return result;
+    }
 
 	@Override
 	public String readLine() throws IOException{
