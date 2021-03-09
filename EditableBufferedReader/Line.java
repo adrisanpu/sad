@@ -13,7 +13,7 @@ public class Line{
 		finalColumn = 0;
 		row = 0;
 	}
-
+	//testcomment
 	public void addChar(char c, boolean overtypeMode) throws IOException{
 		if (!overtypeMode) {
 			buffer.insert(cursor, c);
