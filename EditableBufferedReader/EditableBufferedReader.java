@@ -1,3 +1,4 @@
+
 import java.io.*;
 import static java.lang.System.in;
 
@@ -11,14 +12,13 @@ class EditableBufferedReader extends BufferedReader{
 	public final static int DELETE = 11;
 	public final static int SUPR = 12;
 	public final static int CHANGE_INPUT_MODE = 15;
-	public boolean overtypeMode = false; //mode insercio
-	public int cols;
-	//public ConsoleProcess c;
+	public boolean overTypeMode;
+	public int maxCols;
 
 	public EditableBufferedReader(Reader in){
 		super(in);
-	//	this.c = new ConsoleProcess();
-	//	this.cols = c.getConsoleWidth(); 
+		this.maxCols = 0;
+		overTypeMode = false;
 	}
 
 	public void setRaw() throws IOException{
@@ -77,11 +77,14 @@ class EditableBufferedReader extends BufferedReader{
 		this.setRaw();
 		try{
 			while ((input = read()) != '\r'){
-				//System.out.print(l.cursor);
+				try{
+					maxCols = (new ConsoleProcess()).getConsoleWidth();
+				} catch (IOException e) { e.printStackTrace(); }
+				//System.out.print(maxCols);
 				switch(input){
 					case CHANGE_INPUT_MODE:
-						if(overtypeMode) overtypeMode = false;
-						else overtypeMode = true;
+						if(overTypeMode) overTypeMode = false;
+						else overTypeMode = true;
 						break;
 					case RIGHT:
 						l.moveCursorRight();
@@ -92,20 +95,20 @@ class EditableBufferedReader extends BufferedReader{
 						System.out.print("\033[D");
 						break;
 					case BEGIN:
-						for(int i = l.cursor-1; i >= 0; i--){
-							System.out.print("\033[D");
-						}
+						System.out.print("\033[0G");
 						l.moveCursorBegin();
 						break;
 					case END:
-						for(int i = l.cursor; i <= l.finalColumn-1; i++){
-							System.out.print("\033[C");
-						}
+						System.out.print("\033["+Integer.toString(l.finalColumn+1)+"G");
 						l.moveCursorEnd();
 						break;
 					case DELETE:
 						l.delChar();
 						l.moveCursorLeft();
+						/*if(l.cursor == maxCols-1){
+							System.out.print("\033[A");
+							System.out.print("\033["+Integer.toString(maxCols+1)+"G");
+						}*/
 						System.out.print("\033[D");
 						System.out.print("\033[P");
 						break;
@@ -118,15 +121,16 @@ class EditableBufferedReader extends BufferedReader{
 						}
 						break;
 					default:
-						if(!overtypeMode){
+						if(!overTypeMode){
 							String cols = Integer.toString(l.finalColumn-l.cursor-1);
 							System.out.print("\033["+cols+"@");
-							l.addChar((char)input, overtypeMode);
+							//System.out.print(cols);
+							l.addChar((char)input, overTypeMode);
 							System.out.print((char)input);
 						}
 						else{
-							//l.suprChar();
-							l.addChar((char)input, overtypeMode);
+							l.suprChar();
+							l.addChar((char)input, overTypeMode);
 							System.out.print((char)input);
 						}
 						break;

@@ -1,3 +1,5 @@
+
+
 import java.lang.StringBuilder;
 import java.io.*;
 
@@ -14,19 +16,18 @@ public class Line{
 		row = 0;
 	}
 
-	public void addChar(char c, boolean overtypeMode) throws IOException{
-		if (!overtypeMode) {
-			buffer.insert(cursor, c);
-		} else {
-			buffer.setCharAt(cursor,c);
-		}
+	public void addChar(char c, boolean overTypeMode) throws IOException{
+		buffer.insert(cursor, c);
 		cursor ++;
 		if(cursor > finalColumn) finalColumn = cursor;
+		(!overTypeMode) finalColumn ++;
 	}
 
 	public void delChar() throws IOException{
-		buffer.delete(cursor-1, cursor);
-		finalColumn --;
+		if(cursor > 0){
+			buffer.delete(cursor-1, cursor);
+			finalColumn --;
+		}
 		
 	}
 
