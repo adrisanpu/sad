@@ -20,7 +20,7 @@ public class Line{
 		buffer.insert(cursor, c);
 		cursor ++;
 		if(cursor > finalColumn) finalColumn = cursor;
-		(!overTypeMode) finalColumn ++;
+		//else if(!overTypeMode) finalColumn ++;
 	}
 
 	public void delChar() throws IOException{
