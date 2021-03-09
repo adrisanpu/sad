@@ -1,5 +1,3 @@
-
-
 import java.lang.StringBuilder;
 import java.io.*;
 
@@ -16,8 +14,12 @@ public class Line{
 		row = 0;
 	}
 
-	public void addChar(char c, boolean inputMode) throws IOException{
-		buffer.insert(cursor, c);
+	public void addChar(char c, boolean overtypeMode) throws IOException{
+		if (!overtypeMode) {
+			buffer.insert(cursor, c);
+		} else {
+			buffer.setCharAt(cursor,c);
+		}
 		cursor ++;
 		if(cursor > finalColumn) finalColumn = cursor;
 	}

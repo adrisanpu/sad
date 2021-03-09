@@ -1,4 +1,3 @@
-
 import java.io.*;
 import static java.lang.System.in;
 
@@ -12,14 +11,14 @@ class EditableBufferedReader extends BufferedReader{
 	public final static int DELETE = 11;
 	public final static int SUPR = 12;
 	public final static int CHANGE_INPUT_MODE = 15;
-	public boolean inputMode = false; //mode insercio
+	public boolean overtypeMode = false; //mode insercio
 	public int cols;
-	public ConsoleProcess c;
+	//public ConsoleProcess c;
 
 	public EditableBufferedReader(Reader in){
 		super(in);
-		this.c = new ConsoleProcess();
-		this.cols = c.getConsoleWidth(); 
+	//	this.c = new ConsoleProcess();
+	//	this.cols = c.getConsoleWidth(); 
 	}
 
 	public void setRaw() throws IOException{
@@ -81,8 +80,8 @@ class EditableBufferedReader extends BufferedReader{
 				//System.out.print(l.cursor);
 				switch(input){
 					case CHANGE_INPUT_MODE:
-						if(inputMode) inputMode = false;
-						else inputMode = true;
+						if(overtypeMode) overtypeMode = false;
+						else overtypeMode = true;
 						break;
 					case RIGHT:
 						l.moveCursorRight();
@@ -119,15 +118,15 @@ class EditableBufferedReader extends BufferedReader{
 						}
 						break;
 					default:
-						if(!inputMode){
+						if(!overtypeMode){
 							String cols = Integer.toString(l.finalColumn-l.cursor-1);
 							System.out.print("\033["+cols+"@");
-							l.addChar((char)input, inputMode);
+							l.addChar((char)input, overtypeMode);
 							System.out.print((char)input);
 						}
 						else{
-							l.suprChar();
-							l.addChar((char)input, inputMode);
+							//l.suprChar();
+							l.addChar((char)input, overtypeMode);
 							System.out.print((char)input);
 						}
 						break;
