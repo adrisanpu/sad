@@ -122,9 +122,7 @@ class EditableBufferedReader extends BufferedReader{
 						break;
 					default:
 						if(!overTypeMode){
-							String cols = Integer.toString(l.finalColumn-l.cursor-1);
-							System.out.print("\033["+cols+"@");
-							//System.out.print(cols);
+							System.out.print("\033[@");
 							l.addChar((char)input, overTypeMode);
 							System.out.print((char)input);
 						}
