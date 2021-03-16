@@ -1,13 +1,12 @@
-
-
 import java.lang.StringBuilder;
 import java.io.*;
+import java.util.Observable;
 
-public class Line{
+public class Line extends Observable{
     public StringBuilder buffer;
     public int cursor;
     public int finalColumn;
-	
+
     public Line(){
 	buffer = new StringBuilder("");
 	cursor = 0;
@@ -43,8 +42,12 @@ public class Line{
 	
 
     public void moveCursorRight() throws IOException{
-	//if(cursor == finalColumn) addChar(' ', false);
-	cursor ++;
+	if(cursor < finalColumn){
+	    cursor ++;
+	    setChanged();
+	    notifyObservers(new ActionObject(Constants.RIGHT));	    
+	}
+
     }
 
     public void moveCursorLeft() throws IOException{
@@ -59,3 +62,4 @@ public class Line{
 	cursor = finalColumn;
     }
 }
+
