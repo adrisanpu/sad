@@ -1,18 +1,9 @@
-
 import java.io.*;
 import static java.lang.System.in;
 
-
 class EditableBufferedReader extends BufferedReader{
-
-    private final static int RIGHT = 7;
-    private final static int LEFT = 8;
-    private final static int END = 9;
-    private final static int BEGIN = 10;
-    private final static int DELETE = 11;
-    private final static int SUPR = 12;
-    private final static int CHANGE_INPUT_MODE = 15;
     public boolean overTypeMode;
+    public Console console;
 
     public EditableBufferedReader(Reader in){
 	super(in);
@@ -37,25 +28,25 @@ class EditableBufferedReader extends BufferedReader{
 	ch = in.read();
 	    switch(ch){
 		case 127:
-		    result = DELETE;
+		    result = Constants.DELETE;
 		    break;
 		case 38:	//utilitzo caracter & per suprimir
-		    result = SUPR;
+		    result = Constants.SUPR;
 		    break;
 		case 37:	//utilitzo caracter % per mode insercio/sobre-escriptura
-		    result = CHANGE_INPUT_MODE;
+		    result = Constants.CHANGE_INPUT_MODE;
 		    break;
 		case 60:	//utilitzo caracter < per anar inici
-		    result = BEGIN;
+		    result = Constants.BEGIN;
 		    break;
 		case 62:	//utilitzo caracter > per anar final
-		    result = END;
+		    result = Constants.END;
 		    break;
 		case 27:	//seq ESC
 		    if(in.read() == 91){	//seq [ 
 			int aux = in.read();
-			if(aux == 'D') result = LEFT;
-			else if(aux == 'C') result = RIGHT;
+			if(aux == 'D') result = Constants.LEFT;
+			else if(aux == 'C') result = Constants.RIGHT;
 			else result = 0;
 		    }
 		    break;
@@ -70,6 +61,7 @@ class EditableBufferedReader extends BufferedReader{
     @Override
     public String readLine() throws IOException{
         Line l = new Line();
+	l.addObserver(new Console());
         int input;
         this.setRaw();
         try{
@@ -77,31 +69,28 @@ class EditableBufferedReader extends BufferedReader{
 		
 		//System.out.print(maxCols);
 		switch(input){
-		    case CHANGE_INPUT_MODE:
+		    case Constants.CHANGE_INPUT_MODE:
 			if(overTypeMode) overTypeMode = false;
 			else overTypeMode = true;
 			break;
-		    case RIGHT:
-			if(l.cursor < l.finalColumn){
-			    l.moveCursorRight();
-			    System.out.print("\033[C");
-			}
+		    case Constants.RIGHT:
+			l.moveCursorRight();
 			break;
-		    case LEFT:
+		    case Constants.LEFT:
 			if(l.cursor > 0){
 			    l.moveCursorLeft();
 			    System.out.print("\033[D");
 			}
 			break;
-		    case BEGIN:
+		    case Constants.BEGIN:
 			System.out.print("\033[0G");
 			l.moveCursorBegin();
 			break;
-		    case END:
+		    case Constants.END:
 			System.out.print("\033["+Integer.toString(l.finalColumn+1)+"G");
 			l.moveCursorEnd();
 			break;
-		    case DELETE:
+		    case Constants.DELETE:
 			l.delChar();
 			l.moveCursorLeft();
 			/*if(l.cursor == maxCols-1){
@@ -111,7 +100,7 @@ class EditableBufferedReader extends BufferedReader{
 			System.out.print("\033[D");
 			System.out.print("\033[P");
 			break;
-		    case SUPR:
+		    case Constants.SUPR:
 			if(l.cursor < l.finalColumn){
 			    l.suprChar();
 			    System.out.print("\033[C");
