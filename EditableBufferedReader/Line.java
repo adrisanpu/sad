@@ -7,13 +7,11 @@ public class Line{
     public StringBuilder buffer;
     public int cursor;
     public int finalColumn;
-    public int row;
 	
     public Line(){
 	buffer = new StringBuilder("");
 	cursor = 0;
 	finalColumn = 0;
-	row = 0;
     }
 
     public void addChar(char c, boolean overTypeMode) throws IOException{
@@ -45,14 +43,12 @@ public class Line{
 	
 
     public void moveCursorRight() throws IOException{
-	if(cursor == finalColumn){
-		addChar(' ', false);
-	}
-	else cursor ++;
+	//if(cursor == finalColumn) addChar(' ', false);
+	cursor ++;
     }
 
     public void moveCursorLeft() throws IOException{
-	if(cursor > 0) cursor --;	
+	cursor --;	
     }
 
     public void moveCursorBegin() throws IOException{
