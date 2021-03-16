@@ -61,7 +61,7 @@ class EditableBufferedReader extends BufferedReader{
     @Override
     public String readLine() throws IOException{
         Line l = new Line();
-	l.addObserver(new Console());
+		l.addObserver(new Console());
         int input;
         this.setRaw();
         try{
@@ -77,36 +77,23 @@ class EditableBufferedReader extends BufferedReader{
 			l.moveCursorRight();
 			break;
 		    case Constants.LEFT:
-			if(l.cursor > 0){
-			    l.moveCursorLeft();
-			    System.out.print("\033[D");
-			}
+			l.moveCursorLeft();
 			break;
 		    case Constants.BEGIN:
-			System.out.print("\033[0G");
 			l.moveCursorBegin();
 			break;
 		    case Constants.END:
-			System.out.print("\033["+Integer.toString(l.finalColumn+1)+"G");
 			l.moveCursorEnd();
 			break;
 		    case Constants.DELETE:
 			l.delChar();
-			l.moveCursorLeft();
 			/*if(l.cursor == maxCols-1){
 				System.out.print("\033[A");
 				System.out.print("\033["+Integer.toString(maxCols+1)+"G");
 			}*/
-			System.out.print("\033[D");
-			System.out.print("\033[P");
 			break;
 		    case Constants.SUPR:
-			if(l.cursor < l.finalColumn){
-			    l.suprChar();
-			    System.out.print("\033[C");
-			    System.out.print("\033[D");
-			    System.out.print("\033[P");
-			}
+			l.suprChar();
 			break;
 		    default:
 			if(!overTypeMode){

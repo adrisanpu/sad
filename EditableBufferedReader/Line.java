@@ -30,14 +30,19 @@ public class Line extends Observable{
 	if(cursor > 0){
 		buffer.delete(cursor-1, cursor);
 		finalColumn --;
+		cursor--;
+		setChanged();
+	    notifyObservers(new ActionObject(Constants.DELETE));
 	}
-	
     }
 
     public void suprChar() throws IOException{
-        buffer.delete(cursor, cursor+1);
-	finalColumn --;
-	
+        if(cursor < finalColumn){
+			buffer.delete(cursor, cursor+1);
+			finalColumn --;
+			setChanged();
+	    	notifyObservers(new ActionObject(Constants.SUPR));
+		}
     }
 	
 
@@ -51,15 +56,25 @@ public class Line extends Observable{
     }
 
     public void moveCursorLeft() throws IOException{
-	cursor --;	
+	if(cursor > 0){
+	    cursor--;
+	    setChanged();
+	    notifyObservers(new ActionObject(Constants.LEFT));	    
+	}
     }
 
     public void moveCursorBegin() throws IOException{
 	cursor = 0;
+	setChanged();
+	notifyObservers(new ActionObject(Constants.BEGIN));
     }
 
     public void moveCursorEnd() throws IOException{
 	cursor = finalColumn;
+	ActionObject aux = new ActionObject(Constants.END);
+	aux.setFinalColumn(finalColumn);
+	setChanged();
+	notifyObservers(aux);
     }
 }
 
