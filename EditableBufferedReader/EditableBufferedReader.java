@@ -61,7 +61,7 @@ class EditableBufferedReader extends BufferedReader{
     @Override
     public String readLine() throws IOException{
         Line l = new Line();
-		l.addObserver(new Console());
+	l.addObserver(new Console());
         int input;
         this.setRaw();
         try{
@@ -96,16 +96,8 @@ class EditableBufferedReader extends BufferedReader{
 			l.suprChar();
 			break;
 		    default:
-			if(!overTypeMode){
-			    System.out.print("\033[@");
-			    l.addChar((char)input, overTypeMode);
-			    System.out.print((char)input);
-			}
-			else{
-			    l.addChar((char)input, overTypeMode);
-			    System.out.print((char)input);
-			}
-			break;
+			l.addChar((char)input, overTypeMode);
+			break;	
 		}
 	    }
         }finally{
