@@ -14,14 +14,15 @@ public class Line extends Observable{
     }
 
     public void addChar(char c, boolean overTypeMode) throws IOException{
-	if(!overTypeMode) {
+	if(overTypeMode && cursor < finalColumn) buffer.setCharAt(cursor,c);
+	else{
 	    buffer.insert(cursor, c);
 	    finalColumn++;
-	} 
-	else {
-	    if(cursor < finalColumn) buffer.setCharAt(cursor,c);
-	    else buffer.insert(cursor, c);
+	    setChanged();
+	    notifyObservers(new ActionObject(Constants.SHIFTCHAR));
 	}
+	setChanged();
+	notifyObservers(new ActionObject(Constants.TYPECHAR, c));
 	cursor ++;
 	if(cursor > finalColumn) finalColumn = cursor;
     }

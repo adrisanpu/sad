@@ -15,24 +15,31 @@ class Console implements Observer{
 	    case Constants.RIGHT:
 		System.out.print("\033[C");
 		break;
-		case Constants.LEFT:
+	    case Constants.LEFT:
 		System.out.print("\033[D");
 		break;
-		case Constants.BEGIN:
+	    case Constants.BEGIN:
 		System.out.print("\033[0G");
 		break;
-		case Constants.END:
+	    case Constants.END:
 		System.out.print("\033["+Integer.toString(aux.finalColumn+1)+"G");
 		break;
-		case Constants.DELETE:
+	    case Constants.DELETE:
 		System.out.print("\033[D");
 		System.out.print("\033[P");
 		break;
-		case Constants.SUPR:
+	    case Constants.SUPR:
 		System.out.print("\033[C");
 		System.out.print("\033[D");
 		System.out.print("\033[P");
 		break;
+	    case Constants.SHIFTCHAR:
+		System.out.print("\033[@");
+		break;
+	    case Constants.TYPECHAR:
+		System.out.print(aux.c);
+		break;
+
 	}	
     }
 }
