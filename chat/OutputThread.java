@@ -2,9 +2,9 @@ import java.io.*;
 import java.net.*;  
 
 public class OutputThread extends Thread{
-    public ServerSocket serverSocket;
+    public MyServerSocket serverSocket;
 
-    public OutputThread(ServerSocket s) {
+    public OutputThread(MyServerSocket s) {
         serverSocket = s;
     }
 
