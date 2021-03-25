@@ -6,8 +6,7 @@ public class TesterMySocketServer{
     public static void main(String[] args) {
 	BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 	try {
-	    System.out.print("port: ");
-	    int port = Integer.parseInt(in.readLine());
+	    int port = Integer.parseInt(args[0]);
 	    MyServerSocket server = new MyServerSocket(port);
 	    Socket socket = server.accept();
 	    BufferedReader entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
