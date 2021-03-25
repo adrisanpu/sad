@@ -10,9 +10,8 @@ public class TesterMySocketServer{
 	    MyServerSocket server = new MyServerSocket(port);
 	    Socket socket = server.accept();
 	    BufferedReader entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-	    String mensajeRecibido = "";
-            mensajeRecibido = entrada.readLine();
-            System.out.println(mensajeRecibido);
+	    String line = null;
+	    while ((line = entrada.readLine()) != null) System.out.println(line);
 	    //server.close();
 	} catch (IOException e) { e.printStackTrace(); 
 	}
