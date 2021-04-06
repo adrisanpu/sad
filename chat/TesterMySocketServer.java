@@ -4,17 +4,17 @@ import java.net.*;
 public class TesterMySocketServer{
 
     public static void main(String[] args) {
-	BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
 	try {
-	    int port = Integer.parseInt(args[0]);
-	    MyServerSocket server = new MyServerSocket(port);
-	    Socket socket = server.accept();
-	    BufferedReader entrada = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+	    MyServerSocket server = new MyServerSocket(Integer.parseInt(args[0]));
+	    MySocket client = server.accept();
+	    System.out.println(client.getNick());
+	    BufferedReader entrada = new BufferedReader(new InputStreamReader(client.getInputStream()));
 	    String line = null;
-	    while ((line = entrada.readLine()) != null) System.out.println(line);
+	    while ((line = entrada.readLine()) != null){
+		System.out.println(line);
+		//System.out.print("test2");
+	    }
 	    //server.close();
-	} catch (IOException e) { e.printStackTrace(); 
-	}
+	} catch (IOException e) { e.printStackTrace();}
     }
-
 }

@@ -4,7 +4,7 @@ import java.net.*;
 public class OutputThread extends Thread{
     public MyServerSocket serverSocket;
 
-    public OutputThread(MyServerSocket s) {
+    public OutputThread(ServerSocket s) {
         serverSocket = s;
     }
 

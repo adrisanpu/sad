@@ -3,7 +3,7 @@ import java.net.*;
 
 public class MySocket extends Socket{
     public String nick;
-    public DataOutputStream message;
+    public DataOutputStream message; 
 
     public MySocket(String n,String h,int p) throws IOException{
 	super(h,p);
@@ -17,7 +17,7 @@ public class MySocket extends Socket{
 
     public void send(String line) throws IOException{
 	message.writeUTF(line);
-	//System.out.print("test");
+	//System.out.print("test1");
     }
 
 }
