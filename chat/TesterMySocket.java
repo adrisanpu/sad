@@ -8,19 +8,11 @@ public class TesterMySocket{
 	    String host = args[1];
 	    int port = Integer.parseInt(args[2]);
 	    MySocket client = new MySocket(args[0],host,port);
-	    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-	    String line = "";
-	    while ((line = in.readLine()) != null){
-		client.send(line);
-	    }
-
-	    /*
-	    InputThread inputThread = new InputThread(client);
+	    System.out.println("client connecting to "+host+" in port "+Integer.toString(port));
+	    new InputThread(client).start();
 	    //OutputThread outputThread = new OutputThread(client.);
-	    inputThread.start();
 	    //outputThread.start();
-	    //client.close();
-	    */
+	    //client.close();	    
 	} catch (IOException e) { e.printStackTrace(); 
 	} //catch (UnknownHostException e) { e.printStackTrace(); }
     }

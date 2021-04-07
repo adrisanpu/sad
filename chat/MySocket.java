@@ -10,7 +10,12 @@ public class MySocket extends Socket{
 	nick = n;
 	message = new DataOutputStream(this.getOutputStream());
     }
-
+    public MySocket() throws IOException{
+	super();
+	nick = "";
+	message = null;
+    }
+	
     public String getNick(){
 	return nick;
     }
