@@ -1,7 +1,7 @@
 import sys
   
 # Selection sort code
-def selectionSort(arr)
+def selectionSort(arr):
     for i in range(len(arr)):
         # Find the minimum element in remaining 
         # unsorted array
@@ -30,11 +30,14 @@ def bubbleSort(arr):
             if arr[j] > arr[j+1] :
                 arr[j], arr[j+1] = arr[j+1], arr[j]
   
+
+#********************TESTER*************************
+
 # Driver code to test above
-arr = [64, 34, 25, 12, 22, 11, 90]
+#arr = [64, 34, 25, 12, 22, 11, 90]
   
-bubbleSort(arr)
+#bubbleSort(arr)
   
-print ("Sorted array is:")
-for i in range(len(arr)):
-    print ("%d" %arr[i]),
+#print ("Sorted array is:")
+#for i in range(len(arr)):
+#    print ("%d" %arr[i]),
