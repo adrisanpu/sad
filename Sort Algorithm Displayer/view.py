@@ -17,7 +17,7 @@ class myWindow(Gtk.Window):
         sel_sort.connect("clicked", self.on_sel_sort_clicked)
         hbox.pack_start(sel_sort, True, True, 0)
         
-        bub_sort = Gtk.Button.new_with_label("SELECTION SORT")
+        bub_sort = Gtk.Button.new_with_label("BUBBLE SORT")
         bub_sort.connect("clicked", self.on_bub_sort_clicked)
         hbox.pack_start(bub_sort, True, True, 0)
         
