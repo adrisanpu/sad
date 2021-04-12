@@ -1,11 +1,9 @@
-import gi
-gi.require_version("Gtk", "3.0")
-from gi.repository import Gtk
-from gi.repository import Gdk
+import Gtk
 from const import *
 
 class myWindow(Gtk.Window):
     sort_algo = SELECTION_SORT
+    controller = controller(self)
     
     def __init__(self):
         Gtk.Window.__init__(self,title="SORT ALGORITHM DISPLAYER")
@@ -30,16 +28,22 @@ class myWindow(Gtk.Window):
         disp = Gtk.Box(spacing=10)
         disp.set_homogeneous(False)
         
-        elem = Gtk.Entry()
-        disp.pack_start(elem, True, True, 0)
-        elem = Gtk.Entry()
-        disp.pack_start(elem, True, True, 0)
-        elem = Gtk.Entry()
-        disp.pack_start(elem, True, True, 0)
-        elem = Gtk.Entry()
-        disp.pack_start(elem, True, True, 0)
-        elem = Gtk.Entry()
-        disp.pack_start(elem, True, True, 0)
+        elem1 = Gtk.Entry()
+        elems.append(elem1)
+        disp.pack_start(elem1, True, True, 0)
+        elem2 = Gtk.Entry()
+        elems.append(elem2)
+        disp.pack_start(elem2, True, True, 0)
+        elem3 = Gtk.Entry()
+        elems.append(elem3)
+        disp.pack_start(elem3, True, True, 0)
+        elem4 = Gtk.Entry()
+        elems.append(elem4)
+        disp.pack_start(elem4, True, True, 0)
+        elem5 = Gtk.Entry()
+        elems.append(elem5)
+        disp.pack_start(elem5, True, True, 0)
+
         
         bottom_menu_1 = Gtk.Box(spacing=10)
         bottom_menu_1.set_homogeneous(False)
@@ -70,17 +74,37 @@ class myWindow(Gtk.Window):
             self.sort_algo = algo;
         else:
             state = "off"
+        #comunicar algoritme al controlador
         print("algorithm selected", algo, "was turned", state)
         
     def on_random_button_clicked(self, bub_sort):
         print('"random" button was clicked')
+        for i in elems:
+            if(i.get_text() == null):
+                i.set_text(random.randint(0,100))    
+        #assignar valors aleatoris a les caixes que queden buides
         
     def on_start_button_clicked (self, bub_sort):
         print('"start" button was clicked, sorting elements with algorithm', self.sort_algo)
+        if(len(elems) == ELEMENTS):
+            for i in elems:
+                input_array.append(i.get_text())
+            sorted_array = controller.sort_array(input_array, self.sort_algo);
+            j = 0
+            for i in elems:
+                i.set_text(sorted_array[j]) 
+                j++ 
+        else
+            print('fill all the entries to start.')
+
+        #enviar al controlador el array i l'algorisme
+        #sorted_array = controller.sort_array(input_array, algo) 
+        #modificar la vista
 
 
 if __name__ == "__main__":
     window = myWindow()
     window.connect("destroy", Gtk.main_quit)
     window.show_all()
+    controller = controller(window)
     Gtk.main()

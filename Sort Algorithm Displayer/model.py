@@ -1,43 +1,45 @@
 import sys
-  
-# Selection sort code
-def selectionSort(arr):
-    for i in range(len(arr)):
-        # Find the minimum element in remaining 
-        # unsorted array
-        min_idx = i
-        for j in range(i+1, len(arr)):
-            if arr[min_idx] > arr[j]:
-                min_idx = j
-        # Swap the found minimum element with 
-        # the first element        
-        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+
+class array_to_sort:
+
+    def __init__(self, array):
+        self.elements = array
+        self.length = len(array)
+
+    # Selection sort algoithm
+    def selection_sort(self):
+        for i in range(self.length):
+            # Find the minimum element in remaining 
+            # unsorted arrayay
+            min_idx = i
+            for j in range(i+1, self.length):
+                if self.elements[min_idx] > self.elements[j]:
+                    min_idx = j
+            # Swap the found minimum element with 
+            # the first element        
+            self.elements[i], self.elements[min_idx] = self.elements[min_idx], self.elements[i]
 
 
-def bubbleSort(arr):
-    n = len(arr)
-  
-    # Traverse through all array elements
-    for i in range(n-1):
-    # range(n) also work but outer loop will repeat one time more than needed.
-  
-        # Last i elements are already in place
-        for j in range(0, n-i-1):
-  
-            # traverse the array from 0 to n-i-1
-            # Swap if the element found is greater
-            # than the next element
-            if arr[j] > arr[j+1] :
-                arr[j], arr[j+1] = arr[j+1], arr[j]
+    # Bubble sort algoithm
+    def bubble_sort(self):
+        n = len(self.elements)
+        # Traverse through all arrayay elements
+        for i in range(n-1):
+        # range(n) also work but outer loop will repeat one time more than needed.
+      
+            # Last i elements are already in place
+            for j in range(0, n-i-1):
+                # traversearrayay from 0 to n-i-1
+                # Swap if the element found is greater
+                # than the next element
+                if self.elements[j] > self.elements[j+1] :
+                    self.elements[j], self.elements[j+1] = self.elements[j+1], self.elements[j]
   
 
-#********************TESTER*************************
+array = array_to_sort([64, 34, 25, 12, 22, 11, 90])
+  
+array.selection_sort()
 
-# Driver code to test above
-#arr = [64, 34, 25, 12, 22, 11, 90]
-  
-#bubbleSort(arr)
-  
-#print ("Sorted array is:")
-#for i in range(len(arr)):
-#    print ("%d" %arr[i]),
+print ("Sorted arrayay is:")
+for i in range(array.length):
+    print ("%d" %array.elements[i])
