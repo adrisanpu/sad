@@ -9,5 +9,7 @@ class controller:
         array = array_to_sort(input_array)
         if(algo == SELECTION_SORT):
             array.selection_sort()
+        elif(algo == BUBBLE_SORT):
+            array.bubble_sort()
 
         return array

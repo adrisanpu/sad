@@ -59,6 +59,10 @@ class myWindow(Gtk.Window):
         random_button.connect("clicked", self.on_random_button_clicked)
         bottom_menu_1.pack_start(random_button, True, True, 0)
         
+        clear_button = Gtk.Button.new_with_label("CLEAR")
+        clear_button.connect("clicked", self.on_clear_button_clicked)
+        bottom_menu_1.pack_start(clear_button, True, True, 0)
+        
         bottom_menu_2 = Gtk.Box(spacing=10)
         bottom_menu_2.set_homogeneous(False)
         
@@ -74,34 +78,29 @@ class myWindow(Gtk.Window):
         
     def on_button_toggled(self, button, algo):
         if button.get_active():
-            state = "on"
             self.sort_algo = algo;
-        else:
-            state = "off"
-        #comunicar algoritme al controlador
-        print("algorithm selected", algo, "was turned", state)
+
         
     def on_random_button_clicked(self, bub_sort):
-        print('"random" button was clicked')
         for i in self.elems:
             if(i.get_text() == ""):
-                i.set_text(str(random.randint(0,100)))    
-        #assignar valors aleatoris a les caixes que queden buides
+                i.set_text(str(random.randint(0,100)))
+                
+    def on_clear_button_clicked(self, bub_sort):
+        for i in self.elems:
+            i.set_text("") 
         
     def on_start_button_clicked (self, bub_sort):
         input_array = []
         control = controller(self)
-        print('"start" button was clicked, sorting elements with algorithm', self.sort_algo)
-        if(len(self.elems) == ELEMENTS):
-            for i in self.elems:
-                input_array.append(int(i.get_text()))
-            sorted_array = control.sort_array(input_array, self.sort_algo);
-            j = 0
-            for i in self.elems:
-                i.set_text(str(sorted_array.elements[j])) 
-                j = j+1
-        else:
-            print('fill all the entries to start.')
+        for i in self.elems:
+            input_array.append(int(i.get_text()))
+        sorted_array = control.sort_array(input_array, self.sort_algo);
+        j = 0
+        for i in self.elems:
+            i.set_text(str(sorted_array.elements[j])) 
+            j = j+1
+       
 
 
 if __name__ == "__main__":

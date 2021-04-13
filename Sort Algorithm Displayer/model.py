@@ -36,10 +36,10 @@ class array_to_sort:
                     self.elements[j], self.elements[j+1] = self.elements[j+1], self.elements[j]
   
 
-array = array_to_sort([64, 34, 25, 12, 22, 11, 90])
+#array = array_to_sort([64, 34, 25, 12, 22, 11, 90])
   
-array.selection_sort()
+#array.selection_sort()
 
-print ("Sorted arrayay is:")
-for i in range(array.length):
-    print ("%d" %array.elements[i])
+#print ("Sorted arrayay is:")
+#for i in range(array.length):
+#   print ("%d" %array.elements[i])
