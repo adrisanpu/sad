@@ -5,6 +5,8 @@ from gi.repository import Gdk
 from const import *
 import random
 from controller import *
+from styles import css
+
 
 class myWindow(Gtk.Window):
     sort_algo = SELECTION_SORT
@@ -12,7 +14,15 @@ class myWindow(Gtk.Window):
     
     def __init__(self):
         Gtk.Window.__init__(self,title="SORT ALGORITHM DISPLAYER")
+
+        #add styles to screen
+        screen = Gdk.Screen.get_default()
+        provider = Gtk.CssProvider()
+        style_context = Gtk.StyleContext()
+        style_context.add_provider_for_screen(screen, provider, Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION)
+        provider.load_from_data(css)
         
+        #add widgets and event handlers
         screen = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
         screen.set_homogeneous(False)
         
@@ -81,28 +91,37 @@ class myWindow(Gtk.Window):
             self.sort_algo = algo;
 
         
-    def on_random_button_clicked(self, bub_sort):
+    def on_random_button_clicked(self, random_button):
         for i in self.elems:
             if(i.get_text() == ""):
                 i.set_text(str(random.randint(0,100)))
                 
-    def on_clear_button_clicked(self, bub_sort):
+    def on_clear_button_clicked(self, clear_button):
         for i in self.elems:
-            i.set_text("") 
+            i.set_text("")
+            i.set_name("default")
         
-    def on_start_button_clicked (self, bub_sort):
+    def on_start_button_clicked (self, start_button):
         input_array = []
         control = controller(self)
         for i in self.elems:
-            input_array.append(int(i.get_text()))
-        sorted_array = control.sort_array(input_array, self.sort_algo);
+            if(i.get_text().isnumeric()):
+                input_array.append(int(i.get_text()))
+        sorted_array = control.sort_array(input_array, self.sort_algo)
         j = 0
         for i in self.elems:
-            i.set_text(str(sorted_array.elements[j])) 
+            i.set_text(str(sorted_array.elements[j]))
+            i.set_name("ordenado")
             j = j+1
-       
-
-
+            
+    def update(self, action):
+        if(action.state == SELECTED):
+            action.widget.set_name("selected")
+        if(action.state == COMPARING):
+            action.widget.set_name("comparing")
+        if(action.state == DONE):
+            action.widget.set_name("default")
+        
 if __name__ == "__main__":
     window = myWindow()
     window.connect("destroy", Gtk.main_quit)
