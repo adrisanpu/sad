@@ -1,12 +1,14 @@
-import sys
+from observer import *
 
 class array_to_sort:
 
     def __init__(self, array):
         self.elements = array
         self.length = len(array)
+        t = Target(Observer())
 
-    # Selection sort algoithm
+
+    # Selection sort algorithm
     def selection_sort(self):
         for i in range(self.length):
             # Find the minimum element in remaining 
@@ -20,7 +22,7 @@ class array_to_sort:
             self.elements[i], self.elements[min_idx] = self.elements[min_idx], self.elements[i]
 
 
-    # Bubble sort algoithm
+    # Bubble sort algorithm
     def bubble_sort(self):
         n = len(self.elements)
         # Traverse through all arrayay elements
