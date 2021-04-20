@@ -25,9 +25,9 @@ class array_to_sort:
             # the first element        
 
             self.elements[i], self.elements[min_idx] = self.elements[min_idx], self.elements[i]
-            self.notify(action(MODIFIED, j, self.elements)) #notify modified
-            self.notify(action(COMPARED, i, self.elements))
-        self.notify(action(DONE, i, self.elements))#notify done    
+            self.notify(action(MODIFIED, j, self.elements)) #notifica moviment
+            self.notify(action(COMPARED, i, self.elements)) #notifica element ordenat, queda a l'esquerre
+        self.notify(action(DONE, i, self.elements)) #notifica array ordenat i ordenacio finalitzda 
 
 
     # Bubble sort algorithm
@@ -42,9 +42,14 @@ class array_to_sort:
                 # traversearrayay from 0 to n-i-1
                 # Swap if the element found is greater
                 # than the next element
+                self.notify(action(SELECTED, j, self.elements)) #element seleccionat
+                self.notify(action(SELECTED, j+1, self.elements)) #element seguent seleccionat
                 if self.elements[j] > self.elements[j+1] :
                     self.elements[j], self.elements[j+1] = self.elements[j+1], self.elements[j]
-    
+                    self.notify(action(MODIFIED, j, self.elements)) #notifica que sha fet un swap
+            self.notify(action(COMPARED, j, self.elements)) #element j = n-i-1 esta comparat, queda a la dreta
+        self.notify(action(DONE, i, self.elements)) #notifica array ordenat i ordenacio finalitzda 
+
     def notify(self, action):
         self.observer.update(action)
 
