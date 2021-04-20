@@ -1,3 +1,6 @@
+from const import *
+from action import *
+
 class array_to_sort:
 
     def __init__(self, array, obs):
@@ -11,15 +14,20 @@ class array_to_sort:
             # Find the minimum element in remaining 
             # unsorted arrayay
             min_idx = i
-            #notify primera selecció
+            self.notify(action(SELECTED, i, self.elements)) #notify primera seleccio
+
             for j in range(i+1, self.length):
-                #notify amb quin estas comparant
+                self.notify(action(SELECTED, j, self.elements))#notify amb quin estas comparant
                 if self.elements[min_idx] > self.elements[j]:
                     min_idx = j
-                    #notify moviment
+                    #notify compared
             # Swap the found minimum element with 
             # the first element        
+
             self.elements[i], self.elements[min_idx] = self.elements[min_idx], self.elements[i]
+            self.notify(action(MODIFIED, j, self.elements)) #notify modified
+            self.notify(action(COMPARED, i, self.elements))
+        self.notify(action(DONE, i, self.elements))#notify done    
 
 
     # Bubble sort algorithm
