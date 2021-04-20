@@ -107,20 +107,29 @@ class myWindow(Gtk.Window):
         for i in self.elems:
             if(i.get_text().isnumeric()):
                 input_array.append(int(i.get_text()))
-        sorted_array = control.sort_array(input_array, self.sort_algo)
-        j = 0
-        for i in self.elems:
-            i.set_text(str(sorted_array.elements[j]))
-            i.set_name("ordenado")
-            j = j+1
-            
+        control.sort_array(input_array, self.sort_algo)
+        
+        #sorted_array = control.sort_array(input_array, self.sort_algo)
+        #j = 0
+        #for i in self.elems:
+        #        i.set_text(str(sorted_array.elements[j]))
+        #        j = j+1
+    
     def update(self, action):
-        if(action.state == SELECTED):
-            action.widget.set_name("selected")
-        if(action.state == COMPARING):
-            action.widget.set_name("comparing")
-        if(action.state == DONE):
-            action.widget.set_name("default")
+        if(action.event == SELECTED):
+            self.elems[action.widget].set_name("selected")
+            print("test selected widget" + str(action.widget))
+        if(action.event == MODIFIED):
+            j = 0
+            for i in self.elems:
+                i.set_text(str(action.array[j]))
+                j = j+1
+        if(action.event == COMPARED):
+            self.elems[action.widget].set_name("compared")
+        if(action.event == DONE):
+            for i in self.elems:
+                i.set_name("finished")
+        time.sleep(SLEEP_TIME) 
         
 if __name__ == "__main__":
     window = myWindow()

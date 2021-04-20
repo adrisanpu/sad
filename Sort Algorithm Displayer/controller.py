@@ -6,10 +6,11 @@ class controller:
         self.view = window
 
     def sort_array(self, input_array, algo):
-        array = array_to_sort(input_array)
+        array = array_to_sort(input_array,self.view)
         if(algo == SELECTION_SORT):
             array.selection_sort()
         elif(algo == BUBBLE_SORT):
             array.bubble_sort()
 
-        return array
+        pass
+        #return array
