@@ -1,12 +1,9 @@
-from observer import *
-
 class array_to_sort:
 
-    def __init__(self, array):
+    def __init__(self, array, obs):
         self.elements = array
         self.length = len(array)
-        t = Target(Observer())
-
+        self.observer = obs
 
     # Selection sort algorithm
     def selection_sort(self):
@@ -14,9 +11,12 @@ class array_to_sort:
             # Find the minimum element in remaining 
             # unsorted arrayay
             min_idx = i
+            #notify primera selecció
             for j in range(i+1, self.length):
+                #notify amb quin estas comparant
                 if self.elements[min_idx] > self.elements[j]:
                     min_idx = j
+                    #notify moviment
             # Swap the found minimum element with 
             # the first element        
             self.elements[i], self.elements[min_idx] = self.elements[min_idx], self.elements[i]
@@ -36,7 +36,10 @@ class array_to_sort:
                 # than the next element
                 if self.elements[j] > self.elements[j+1] :
                     self.elements[j], self.elements[j+1] = self.elements[j+1], self.elements[j]
-  
+    
+    def notify(self, action):
+        self.observer.update(action)
+
 
 #array = array_to_sort([64, 34, 25, 12, 22, 11, 90])
   
