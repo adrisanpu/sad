@@ -124,8 +124,10 @@ class myWindow(Gtk.Window):
             for i in self.elems:
                 i.set_text(str(action.array[j]))
                 j = j+1
+            print("Order modified")
         if(action.event == COMPARED):
             self.elems[action.widget].set_name("compared")
+            print("Compared widget" + str(action.widget))
         if(action.event == DONE):
             for i in self.elems:
                 i.set_name("finished")
