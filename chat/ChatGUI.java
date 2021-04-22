@@ -1,5 +1,5 @@
 import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import javax.swing.*;
 
 /**
@@ -9,7 +9,7 @@ import javax.swing.*;
  * DesignGridLayout
  */
 
-public class Xat implements ActionListener {
+public class ChatGUI implements ActionListener {
     
     private static void createAndShowGUI() {
         //Set the look and feel.
@@ -34,7 +34,7 @@ public class Xat implements ActionListener {
         
         // Create an input JPanel and add a JTextField(25) and a JButton
         JPanel inp = new JPanel();
-        inp.setLayout(new BoxLayout(out, BoxLayout.LINE_AXIS));
+        inp.setLayout(new BoxLayout(inp, BoxLayout.LINE_AXIS));
         JTextField text = new JTextField(25);
         JButton button = new JButton("send");
         inp.add(text);
@@ -48,6 +48,12 @@ public class Xat implements ActionListener {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent event){
+
+
     }
 
     public static void main(String[] args) {
