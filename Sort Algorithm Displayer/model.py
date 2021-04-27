@@ -1,5 +1,6 @@
 from const import *
 from action import *
+import threading
 
 class array_to_sort:
 
@@ -14,20 +15,23 @@ class array_to_sort:
             # Find the minimum element in remaining 
             # unsorted arrayay
             min_idx = i
-            self.notify(action(SELECTED, i, self.elements)) #notify primera seleccio
-
+            #self.notify(action(SELECTED, i, self.elements)) #notify primera seleccio
+            t = threading.Thread(target=self.notify(action(SELECTED, i, self.elements)))
+            t.start()
+            t.join()
             for j in range(i+1, self.length):
                 self.notify(action(SELECTED, j, self.elements))#notify amb quin estas comparant
                 if self.elements[min_idx] > self.elements[j]:
                     min_idx = j
+                    print("smaller than first selected.")
                     #notify compared
             # Swap the found minimum element with 
             # the first element        
 
             self.elements[i], self.elements[min_idx] = self.elements[min_idx], self.elements[i]
-            self.notify(action(MODIFIED, j, self.elements)) #notifica moviment
-            self.notify(action(COMPARED, i, self.elements)) #notifica element ordenat, queda a l'esquerre
-        self.notify(action(DONE, i, self.elements)) #notifica array ordenat i ordenacio finalitzda 
+            self.notify(action(MODIFIED, j, self.elements)) #notify modified
+            self.notify(action(COMPARED, i, self.elements))
+        self.notify(action(DONE, i, self.elements))#notify done
 
 
     # Bubble sort algorithm
@@ -42,18 +46,13 @@ class array_to_sort:
                 # traversearrayay from 0 to n-i-1
                 # Swap if the element found is greater
                 # than the next element
-                self.notify(action(SELECTED, j, self.elements)) #element seleccionat
-                self.notify(action(SELECTED, j+1, self.elements)) #element seguent seleccionat
                 if self.elements[j] > self.elements[j+1] :
                     self.elements[j], self.elements[j+1] = self.elements[j+1], self.elements[j]
-                    self.notify(action(MODIFIED, j, self.elements)) #notifica que sha fet un swap
-            self.notify(action(COMPARED, j, self.elements)) #element j = n-i-1 esta comparat, queda a la dreta
-        self.notify(action(DONE, i, self.elements)) #notifica array ordenat i ordenacio finalitzda 
-
+    
     def notify(self, action):
         self.observer.update(action)
-
-
+        
+        
 #array = array_to_sort([64, 34, 25, 12, 22, 11, 90])
   
 #array.selection_sort()

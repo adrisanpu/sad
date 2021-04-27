@@ -6,6 +6,7 @@ from const import *
 import random
 from controller import *
 from styles import css
+import time
 
 
 class myWindow(Gtk.Window):
@@ -118,19 +119,21 @@ class myWindow(Gtk.Window):
     def update(self, action):
         if(action.event == SELECTED):
             self.elems[action.widget].set_name("selected")
-            print("test selected widget" + str(action.widget))
+            print(" selected: " + self.elems[action.widget].get_text())
         if(action.event == MODIFIED):
             j = 0
             for i in self.elems:
                 i.set_text(str(action.array[j]))
                 j = j+1
             print("Order modified")
+            for i in self.elems:
+                print(i.get_text())
         if(action.event == COMPARED):
             self.elems[action.widget].set_name("compared")
-            print("Compared widget" + str(action.widget))
+            print("Compared widget: " + self.elems[action.widget].get_text())
         if(action.event == DONE):
             for i in self.elems:
-                i.set_name("finished")
+                i.set_name("finished")        
         time.sleep(SLEEP_TIME) 
         
 if __name__ == "__main__":
