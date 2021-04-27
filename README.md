@@ -1,5 +1,7 @@
 # sad
 
+https://www.pythonmania.net/es/2009/05/21/threads-en-pygtk/
+
 REPOSITORI DE L'ASSIGNATURA SOFTWARE APLICACIONS DISTRIBUIDES:
 
 AUTORS:
