@@ -89,7 +89,7 @@ class consoleView():
             j += 1
             print("\033[0m")
         time.sleep(SLEEP_TIME)
-    
+        pass
     
 if __name__ == "__main__":
     window = consoleView()
