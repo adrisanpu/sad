@@ -17,24 +17,25 @@ class array_to_sort:
             # unsorted array
             min_idx = i
             self.notify(action(SELECTED, i, self.elements)) #notify primera seleccio
-            time.sleep(0.8)
+            time.sleep(SLEEP_TIME)
             for j in range(i+1, self.length):
-                
+                self.notify(action(SELECTED, j, self.elements))#notify amb quin estas comparant
+                time.sleep(SLEEP_TIME)
                 if self.elements[min_idx] > self.elements[j]:
                     min_idx = j
-                    self.notify(action(SELECTED, j, self.elements))#notify amb quin estas comparant
-                    time.sleep(0.8)
-                    print("smaller than first selected.")
+                    self.notify(action(FOUND_LOWER, j, self.elements))#notify amb quin estas comparant
+                    time.sleep(SLEEP_TIME)
                     #notify compared
             # Swap the found minimum element with 
             # the first element        
 
             self.elements[i], self.elements[min_idx] = self.elements[min_idx], self.elements[i]
             self.notify(action(MODIFIED, j, self.elements)) #notify modified
-            time.sleep(0.8)
+            time.sleep(SLEEP_TIME)
             self.notify(action(COMPARED, i, self.elements))
-            time.sleep(0.8)
+            time.sleep(SLEEP_TIME)
         self.notify(action(DONE, i, self.elements))#notify done
+        pass
 
 
     # Bubble sort algorithm
@@ -45,22 +46,23 @@ class array_to_sort:
             # range(n) also work but outer loop will repeat one time more than needed.
             if(i != n-1):
                 self.notify(action(SELECTED, i, self.elements)) #notify primera seleccio
-                time.sleep(0.8)
+                time.sleep(SLEEP_TIME)
 
             # Last i elements are already in place
             for j in range(0, n-i-1):
                 self.notify(action(SELECTED, j, self.elements))#notify amb quin estas comparant
-                time.sleep(0.8)
+                time.sleep(SLEEP_TIME)
                 # traversearrayay from 0 to n-i-1
                 # Swap if the element found is greater
                 # than the next element
                 if self.elements[j] > self.elements[j+1] :
                     self.elements[j], self.elements[j+1] = self.elements[j+1], self.elements[j]
                     self.notify(action(MODIFIED, j, self.elements)) #notify modified
-                    time.sleep(0.8)
+                    time.sleep(SLEEP_TIME)
             self.notify(action(COMPARED, n-i-1, self.elements))
-            time.sleep(0.8)   
-        self.notify(action(DONE, i, self.elements))#notify done     
+            time.sleep(SLEEP_TIME)   
+        self.notify(action(DONE, i, self.elements))#notify done
+        pass
             
     
     def notify(self, action):

@@ -25,7 +25,7 @@ class consoleView():
                 correct_input = True
         correct_input = False
         while correct_input == False:
-            print("Type numbers separated by blank spaces or type [r/R] for random numbers:")
+            print("Type numbers separated by blank spaces or type [r/R] for random numbers:", end=' ')
             numbers = input()
             if numbers.lower() == 'r':
                 for i in range(ELEMENTS):
@@ -50,47 +50,26 @@ class consoleView():
     
     def update(self, action):
         if(action.event == SELECTED):
-            print("\033[36m")
-            print("\033A")
-            print(action.array[action.widget], end=' ')
-            print("\033[0m")
-            print("\033A")
-            #print(" selected: " + str(action.array[action.widget]))
-        elif(action.event == MODIFIED):
+            print("\033[36m"+str(action.array[action.widget])+ "\033[0m", end=' ')
+        if(action.event == MODIFIED):
             for i in action.array:
                 print(i, end=' ')
-            
-            #print("Order modified:", end=' ')
-            #for i in action.array:
-            #    print(i, end=' ')
-        elif(action.event == COMPARED):
+        if(action.event == COMPARED):
             j = 0
             for i in action.array:
                 if(j == action.widget):
-                    print("\033[35m")
-                    print(i, end=' ')
-                    print("\033[0m")
+                    print("\033[1m"+str(i)+"\033[0m", end=' ')
                 j += 1
-            #print("Compared widget: " + str(action.array[action.widget]))
-        elif(action.event == DONE):
-            print("\033[32m")
+        if(action.event == DONE):
             for i in action.array:
-                print(i, end=' ')
-            print("\033[0m")
-            #print("Finished:", end=' ')
-            #for i in action.array:
-            #   print(i, end=' ')
-        elif(action.event == FOUND_LOWER):
-            print("\033[33m")
+                print("\033[32m"+str(i)+"\033[0m", end=' ')
+        if(action.event == FOUND_LOWER):
             j = 0
             for i in action.array:
                 if(j == action.widget):
-                    print(i, end=' ')
-            j += 1
-            print("\033[0m")
-        time.sleep(SLEEP_TIME)
-        pass
-    
+                    print("\033[35m"+str(i)+"\033[0m", end=' ')
+                j += 1
+
 if __name__ == "__main__":
     window = consoleView()
     window.initialize_window()

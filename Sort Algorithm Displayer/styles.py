@@ -9,6 +9,9 @@ css = b"""
         #finished{
             background-color: #88CA54;
         }
+        #lower{
+            background-color: #DB503F;
+        }
         
         #default {
             background-color: #FFFFFF;

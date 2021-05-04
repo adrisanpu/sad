@@ -111,16 +111,14 @@ class myWindow(Gtk.Window):
                 input_array.append(int(i.get_text()))
         control.sort_array(input_array, self.sort_algo)
         
-        #sorted_array = control.sort_array(input_array, self.sort_algo)
-        #j = 0
-        #for i in self.elems:
-        #        i.set_text(str(sorted_array.elements[j]))
-        #        j = j+1
     
     def update(self, action):
         if(action.event == SELECTED):
             self.elems[action.widget].set_name("selected")
             print(" selected: " + self.elems[action.widget].get_text())
+        if(action.event == FOUND_LOWER):
+            self.elems[action.widget].set_name("lower")
+            print(" lower found: " + self.elems[action.widget].get_text())
         if(action.event == MODIFIED):
             j = 0
             for i in self.elems:
@@ -132,10 +130,12 @@ class myWindow(Gtk.Window):
         if(action.event == COMPARED):
             self.elems[action.widget].set_name("compared")
             print("Compared widget: " + self.elems[action.widget].get_text())
+            for i in self.elems:
+                if(i.get_name() != "compared"):
+                    i.set_name("default")
         if(action.event == DONE):
             for i in self.elems:
                 i.set_name("finished")        
-        time.sleep(SLEEP_TIME) 
         
 if __name__ == "__main__":
     window = myWindow()
