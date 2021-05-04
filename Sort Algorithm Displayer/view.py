@@ -9,6 +9,7 @@ from styles import css
 import time
 
 
+
 class myWindow(Gtk.Window):
     sort_algo = SELECTION_SORT
     elems = []

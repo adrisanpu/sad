@@ -7,10 +7,15 @@ class controller:
 
     def sort_array(self, input_array, algo):
         array = array_to_sort(input_array,self.view)
+        
         if(algo == SELECTION_SORT):
-            array.selection_sort()
+            thread = threading.Thread(target=array.selection_sort)
+            thread.daemon = True
+            thread.start()
         elif(algo == BUBBLE_SORT):
-            array.bubble_sort()
+            thread = threading.Thread(target=array.bubble_sort)
+            thread.daemon = True
+            thread.start()
 
         pass
         #return array

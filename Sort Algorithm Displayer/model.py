@@ -1,6 +1,8 @@
 from const import *
 from action import *
 import threading
+from gi.repository import GLib
+import time
 
 class array_to_sort:
 
@@ -13,25 +15,27 @@ class array_to_sort:
     def selection_sort(self):
         for i in range(self.length):
             # Find the minimum element in remaining 
-            # unsorted arrayay
+            # unsorted array
             min_idx = i
-            #self.notify(action(SELECTED, i, self.elements)) #notify primera seleccio
-            t = threading.Thread(target=self.notify(action(SELECTED, i, self.elements)))
-            t.start()
-            t.join()
+            GLib.idle_add(self.notify, action(SELECTED, i, self.elements)) #notify primera seleccio
+            time.sleep(0.8)
             for j in range(i+1, self.length):
-                self.notify(action(SELECTED, j, self.elements))#notify amb quin estas comparant
+                
                 if self.elements[min_idx] > self.elements[j]:
                     min_idx = j
+                    GLib.idle_add(self.notify, action(SELECTED, j, self.elements))#notify amb quin estas comparant
+                    time.sleep(0.8)
                     print("smaller than first selected.")
                     #notify compared
             # Swap the found minimum element with 
             # the first element        
 
             self.elements[i], self.elements[min_idx] = self.elements[min_idx], self.elements[i]
-            self.notify(action(MODIFIED, j, self.elements)) #notify modified
-            self.notify(action(COMPARED, i, self.elements))
-        self.notify(action(DONE, i, self.elements))#notify done
+            GLib.idle_add(self.notify, action(MODIFIED, j, self.elements)) #notify modified
+            time.sleep(0.8)
+            GLib.idle_add(self.notify, action(COMPARED, i, self.elements))
+            time.sleep(0.8)
+        GLib.idle_add(self.notify, action(DONE, i, self.elements))#notify done
 
 
     # Bubble sort algorithm
@@ -39,15 +43,26 @@ class array_to_sort:
         n = len(self.elements)
         # Traverse through all arrayay elements
         for i in range(n-1):
-        # range(n) also work but outer loop will repeat one time more than needed.
-      
+            # range(n) also work but outer loop will repeat one time more than needed.
+            if(i != n-1):
+                GLib.idle_add(self.notify, action(SELECTED, i, self.elements)) #notify primera seleccio
+                time.sleep(0.8)
+
             # Last i elements are already in place
             for j in range(0, n-i-1):
+                GLib.idle_add(self.notify, action(SELECTED, j, self.elements))#notify amb quin estas comparant
+                time.sleep(0.8)
                 # traversearrayay from 0 to n-i-1
                 # Swap if the element found is greater
                 # than the next element
                 if self.elements[j] > self.elements[j+1] :
                     self.elements[j], self.elements[j+1] = self.elements[j+1], self.elements[j]
+                    GLib.idle_add(self.notify, action(MODIFIED, j, self.elements)) #notify modified
+                    time.sleep(0.8)
+            GLib.idle_add(self.notify, action(COMPARED, n-i-1, self.elements))
+            time.sleep(0.8)   
+        GLib.idle_add(self.notify, action(DONE, i, self.elements))#notify done     
+            
     
     def notify(self, action):
         self.observer.update(action)
