@@ -114,28 +114,45 @@ class myWindow(Gtk.Window):
     
     def update(self, action):
         if(action.event == SELECTED):
-            self.elems[action.widget].set_name("selected")
-            print(" selected: " + self.elems[action.widget].get_text())
+            self.set_default()
+            self.elems[action.widget_1].set_name("selected")
+            self.elems[action.widget_2].set_name("selected")
         if(action.event == FOUND_LOWER):
-            self.elems[action.widget].set_name("lower")
-            print(" lower found: " + self.elems[action.widget].get_text())
+            for i in self.elems:
+                if(i.get_name() == "lower"):
+                    i.set_name("default")
+            self.elems[action.widget_1].set_name("lower")
         if(action.event == MODIFIED):
+            self.set_default()
+            if action.widget_1 != action.widget_2:
+                self.elems[action.widget_1].set_name("change")
+                self.elems[action.widget_1].gtk_entry_set_alignment(1)
+                self.elems[action.widget_2].set_name("change")
+                self.elems[action.widget_1].gtk_entry_set_alignment(0)
+            time.sleep(SLEEP_TIME)
             j = 0
             for i in self.elems:
                 i.set_text(str(action.array[j]))
                 j = j+1
-            print("Order modified")
-            for i in self.elems:
-                print(i.get_text())
+            time.sleep(SLEEP_TIME)
+            self.elems[action.widget_1].gtk_entry_set_alignment(0.5)
+            self.elems[action.widget_1].gtk_entry_set_alignment(0.5)
+            #if action.widget_1 != action.widget_2:
+            #    self.elems[action.widget_2].set_name("default")
         if(action.event == COMPARED):
-            self.elems[action.widget].set_name("compared")
-            print("Compared widget: " + self.elems[action.widget].get_text())
-            for i in self.elems:
-                if(i.get_name() != "compared"):
-                    i.set_name("default")
+            if self.elems[action.widget_1].get_name() != "compared":
+                self.elems[action.widget_1].set_name("compared")
+            #for i in self.elems:
+            #    if(i.get_name() != "compared"):
+            #        i.set_name("default")
         if(action.event == DONE):
             for i in self.elems:
-                i.set_name("finished")        
+                i.set_name("finished")
+        
+    def set_default(self):
+        for i in self.elems:
+                if(i.get_name() != "compared" and i.get_name() != "lower"):
+                    i.set_name("default")
         
 if __name__ == "__main__":
     window = myWindow()

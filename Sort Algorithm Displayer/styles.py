@@ -12,7 +12,12 @@ css = b"""
         #lower{
             background-color: #DB503F;
         }
-        
+        #change_w1 {
+            background-color: #F3F84B;
+        }
+        #change_w2 {
+            background-color: #F3F84B;
+        }
         #default {
             background-color: #FFFFFF;
         }
