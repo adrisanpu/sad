@@ -49,26 +49,32 @@ class consoleView():
         
     
     def update(self, action):
+        print("\033[1M"+"\033A")
         if(action.event == SELECTED):
-            print("\033[36m"+str(action.array[action.widget])+ "\033[0m", end=' ')
+            for i in action.array:
+                if i == action.array[action.widget_1]: print("\033[36m"+str(i)+ "\033[0m", end=' ')
+                elif i == action.array[action.widget_2]: print("\033[36m"+str(i)+ "\033[0m", end=' ')
+                else: print(str(i), end=' ')
+            #print('\n')
         if(action.event == MODIFIED):
             for i in action.array:
-                print(i, end=' ')
+                print("\033[33m"+str(i)+ "\033[0m", end=' ')
+            #print('\n')
         if(action.event == COMPARED):
-            j = 0
+            compared = True
             for i in action.array:
-                if(j == action.widget):
-                    print("\033[1m"+str(i)+"\033[0m", end=' ')
-                j += 1
+                if(compared): print("\033[1m"+str(i)+"\033[0m", end=' ')
+                else: print(str(i), end=' ')
+                if i == action.array[action.widget_1]: compared = False
+            #print('\n')
         if(action.event == DONE):
             for i in action.array:
                 print("\033[32m"+str(i)+"\033[0m", end=' ')
         if(action.event == FOUND_LOWER):
-            j = 0
             for i in action.array:
-                if(j == action.widget):
-                    print("\033[35m"+str(i)+"\033[0m", end=' ')
-                j += 1
+                if(i == action.array[action.widget_1]): print("\033[31m"+str(i)+"\033[0m", end=' ')
+                else: print(str(i), end=' ')
+            #print('\n')
 
 if __name__ == "__main__":
     window = consoleView()
