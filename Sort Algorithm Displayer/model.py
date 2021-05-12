@@ -12,16 +12,16 @@ class array_to_sort:
 
     # Selection sort algorithm
     def selection_sort(self):
-         for i in range(self.length-1):
+        for i in range(self.length-1):
             # Find the minimum element in remaining 
             # unsorted array
             min_idx = i
             for j in range(i+1, self.length):
-                self.notify(action(SELECTED, i, j, self.elements))#notify amb quin estas comparant
+                self.notify(action(SELECTED, i, j, None))#notify amb quin estas comparant
                 time.sleep(SLEEP_TIME)
                 if self.elements[min_idx] > self.elements[j]:
                     min_idx = j
-                    self.notify(action(FOUND_LOWER, j, None, self.elements))#notify amb quin estas comparant
+                    self.notify(action(FOUND_LOWER, j, None, None))#notify amb quin estas comparant
                     time.sleep(SLEEP_TIME)
                     #notify compared
             # Swap the found minimum element with 
@@ -29,9 +29,9 @@ class array_to_sort:
             self.elements[i], self.elements[min_idx] = self.elements[min_idx], self.elements[i]
             self.notify(action(MODIFIED, i, min_idx, self.elements)) #notify modified
             time.sleep(SLEEP_TIME)
-            self.notify(action(COMPARED, i, None, self.elements))
+            self.notify(action(COMPARED, i, None, None))
             time.sleep(SLEEP_TIME)
-        self.notify(action(DONE, None, None, self.elements))#notify done
+        self.notify(action(DONE, None, None, None))#notify done
         pass
 
 

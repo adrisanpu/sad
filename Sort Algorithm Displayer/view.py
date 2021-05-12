@@ -126,17 +126,16 @@ class myWindow(Gtk.Window):
             self.set_default()
             if action.widget_1 != action.widget_2:
                 self.elems[action.widget_1].set_name("change")
-                self.elems[action.widget_1].gtk_entry_set_alignment(1)
+                #self.elems[action.widget_1].gtk_entry_set_alignment(1)
                 self.elems[action.widget_2].set_name("change")
-                self.elems[action.widget_1].gtk_entry_set_alignment(0)
-            time.sleep(SLEEP_TIME)
+                #self.elems[action.widget_1].gtk_entry_set_alignment(0)
+                time.sleep(SLEEP_TIME)
             j = 0
             for i in self.elems:
                 i.set_text(str(action.array[j]))
                 j = j+1
-            time.sleep(SLEEP_TIME)
-            self.elems[action.widget_1].gtk_entry_set_alignment(0.5)
-            self.elems[action.widget_1].gtk_entry_set_alignment(0.5)
+            #self.elems[action.widget_1].gtk_entry_set_alignment(0.5)
+            #self.elems[action.widget_1].gtk_entry_set_alignment(0.5)
             #if action.widget_1 != action.widget_2:
             #    self.elems[action.widget_2].set_name("default")
         if(action.event == COMPARED):
