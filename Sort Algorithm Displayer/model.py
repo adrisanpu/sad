@@ -1,14 +1,29 @@
 from const import *
 from action import *
-import threading
 import time
+import threading
 
-class array_to_sort:
+class Observable(object):
+    def __init__(self):
+        self._observers = set()
 
-    def __init__(self, array, obs):
+    def add_observer(self, observer):
+        self._observers.add(observer)
+
+    def remove_observer(self, observer):
+        self._observers.remove(observer)
+
+    def notify_observers(self, event):
+        for observer in self._observers:
+            observer.update(self, event)
+        time.sleep(SLEEP_TIME)
+            
+class array_to_sort(Observable):
+
+    def __init__(self, array, *args, **kargs):
         self.elements = array
         self.length = len(array)
-        self.observer = obs
+        Observable.__init__(self, *args, **kargs)
 
     # Selection sort algorithm
     def selection_sort(self):
@@ -17,21 +32,21 @@ class array_to_sort:
             # unsorted array
             min_idx = i
             for j in range(i+1, self.length):
-                self.notify(action(SELECTED, i, j, None))#notify amb quin estas comparant
-                time.sleep(SLEEP_TIME)
+                self.notify_observers(action(SELECTED, i, j, self.elements))#self.notify_observers amb quin estas comparant
+                
                 if self.elements[min_idx] > self.elements[j]:
                     min_idx = j
-                    self.notify(action(FOUND_LOWER, j, None, None))#notify amb quin estas comparant
-                    time.sleep(SLEEP_TIME)
-                    #notify compared
+                    self.notify_observers(action(FOUND_LOWER, j, None, self.elements))#self.notify_observers amb quin estas comparant
+                    
+                    #self.notify_observers compared
             # Swap the found minimum element with 
             # the first element        
             self.elements[i], self.elements[min_idx] = self.elements[min_idx], self.elements[i]
-            self.notify(action(MODIFIED, i, min_idx, self.elements)) #notify modified
-            time.sleep(SLEEP_TIME)
-            self.notify(action(COMPARED, i, None, None))
-            time.sleep(SLEEP_TIME)
-        self.notify(action(DONE, None, None, None))#notify done
+            self.notify_observers(action(MODIFIED, i, min_idx, self.elements)) #self.notify_observers modified
+            
+            self.notify_observers(action(COMPARED, i, None, self.elements))
+            
+        self.notify_observers(action(DONE, None, None, self.elements))#self.notify_observers done
         pass
 
 
@@ -44,31 +59,19 @@ class array_to_sort:
             if(i != n-1):
                 # Last i elements are already in place
                 for j in range(0, n-i-1):
-                    self.notify(action(SELECTED, j, j+1, None))#notify amb quin estas comparant
-                    time.sleep(SLEEP_TIME)
+                    self.notify_observers(action(SELECTED, j, j+1, None))#self.notify_observers amb quin estas comparant
+                    
                     # traversearrayay from 0 to n-i-1
                     # Swap if the element found is greater
                     # than the next element
                     if self.elements[j] > self.elements[j+1] :
-                        self.notify(action(FOUND_LOWER, j+1, None, None)) #notify modified
-                        time.sleep(SLEEP_TIME)
+                        self.notify_observers(action(FOUND_LOWER, j+1, None, None)) #self.notify_observers modified
+                        
                         self.elements[j], self.elements[j+1] = self.elements[j+1], self.elements[j]
-                        self.notify(action(MODIFIED, j, j+1, self.elements)) #notify modified
-                        time.sleep(SLEEP_TIME)
-                self.notify(action(COMPARED, j+1, None, None))
-                time.sleep(SLEEP_TIME)   
-        self.notify(action(DONE, None, None, None))#notify done
+                        self.notify_observers(action(MODIFIED, j, j+1, self.elements)) #self.notify_observers modified
+                        
+                self.notify_observers(action(COMPARED, j+1, None, None))
+                   
+        self.notify_observers(action(DONE, None, None, None))#self.notify_observers done
         pass
             
-    
-    def notify(self, action):
-        self.observer.update(action)
-        
-        
-#array = array_to_sort([64, 34, 25, 12, 22, 11, 90])
-  
-#array.selection_sort()
-
-#print ("Sorted arrayay is:")
-#for i in range(array.length):
-#   print ("%d" %array.elements[i])

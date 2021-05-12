@@ -3,18 +3,24 @@ gi.require_version("Gtk", "3.0")
 from gi.repository import Gtk
 from gi.repository import Gdk
 from const import *
-import random
 from controller import *
 from styles import css
+import random
 import time
 
+class Observer(object):
+    #Not implemented, this is an abstract method
+    def update(self, observable, action):
+        raise
 
-
-class myWindow(Gtk.Window):
-    sort_algo = SELECTION_SORT
-    elems = []
+class myWindow(Gtk.Window, Observer):
     
     def __init__(self):
+        #variables
+        self.sort_algo = SELECTION_SORT
+        self.elems = []
+        
+        #Gtk window initialisation
         Gtk.Window.__init__(self,title="SORT ALGORITHM DISPLAYER")
 
         #add styles to screen
@@ -92,22 +98,25 @@ class myWindow(Gtk.Window):
         screen.pack_start(bottom_menu_1, True, True, 0)
         screen.pack_start(bottom_menu_2, True, True, 0)
         self.add(screen)
-        
+    
+    #change the algorithm when its button is toggled
     def on_button_toggled(self, button, algo):
         if button.get_active():
             self.sort_algo = algo;
 
-        
+    #fill empty text boxes with random numbers
     def on_random_button_clicked(self, random_button):
         for i in self.elems:
             if(i.get_text() == ""):
                 i.set_text(str(random.randint(0,100)))
-                
+    
+    #delete text box entries and set their appearence to default
     def on_clear_button_clicked(self, clear_button):
         for i in self.elems:
             i.set_text("")
             i.set_name("default")
-        
+    
+    #tell the controller the user wants to start sorting the textboxe's values array with selected algorithm
     def on_start_button_clicked (self, start_button):
         input_array = []
         control = controller(self)
@@ -116,7 +125,9 @@ class myWindow(Gtk.Window):
                 input_array.append(int(i.get_text()))
         control.sort_array(input_array, self.sort_algo)
     
-    def update(self, action):
+    #implementation of the abstract method 
+    def update(self, observable, action):
+        #switch all the events and reset the style and values of textboxes
         if(action.event == SELECTED):
             self.set_default()
             self.elems[action.widget_1].set_name("selected")
@@ -148,12 +159,14 @@ class myWindow(Gtk.Window):
         if(action.event == DONE):
             for i in self.elems:
                 i.set_name("finished")
-        
+    
+    #set textboxes styles to default
     def set_default(self):
         for i in self.elems:
                 if(i.get_name() != "compared" and i.get_name() != "lower"):
                     i.set_name("default")
-        
+
+
 if __name__ == "__main__":
     window = myWindow()
     window.connect("destroy", Gtk.main_quit)

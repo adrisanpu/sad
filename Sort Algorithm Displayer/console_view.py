@@ -49,7 +49,7 @@ class consoleView():
         
     
     def update(self, action):
-        print("\033[1M"+"\033A")
+        #print("\033[1M"+"\033A")
         if(action.event == SELECTED):
             for i in action.array:
                 if i == action.array[action.widget_1]: print("\033[36m"+str(i)+ "\033[0m", end=' ')
