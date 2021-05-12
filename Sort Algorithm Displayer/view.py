@@ -46,18 +46,23 @@ class myWindow(Gtk.Window):
         disp.set_homogeneous(False)
         
         elem1 = Gtk.Entry()
+        elem1.set_alignment(xalign=0.5)
         self.elems.append(elem1)
         disp.pack_start(elem1, True, True, 0)
         elem2 = Gtk.Entry()
+        elem2.set_alignment(xalign=0.5)
         self.elems.append(elem2)
         disp.pack_start(elem2, True, True, 0)
         elem3 = Gtk.Entry()
+        elem3.set_alignment(xalign=0.5)
         self.elems.append(elem3)
         disp.pack_start(elem3, True, True, 0)
         elem4 = Gtk.Entry()
+        elem4.set_alignment(xalign=0.5)
         self.elems.append(elem4)
         disp.pack_start(elem4, True, True, 0)
         elem5 = Gtk.Entry()
+        elem5.set_alignment(xalign=0.5)
         self.elems.append(elem5)
         disp.pack_start(elem5, True, True, 0)
         
@@ -110,7 +115,6 @@ class myWindow(Gtk.Window):
             if(i.get_text().isnumeric()):
                 input_array.append(int(i.get_text()))
         control.sort_array(input_array, self.sort_algo)
-        
     
     def update(self, action):
         if(action.event == SELECTED):
@@ -126,24 +130,21 @@ class myWindow(Gtk.Window):
             self.set_default()
             if action.widget_1 != action.widget_2:
                 self.elems[action.widget_1].set_name("change")
-                #self.elems[action.widget_1].gtk_entry_set_alignment(1)
                 self.elems[action.widget_2].set_name("change")
-                #self.elems[action.widget_1].gtk_entry_set_alignment(0)
+                time.sleep(SLEEP_TIME)
+                self.elems[action.widget_1].set_alignment(xalign=1)
+                self.elems[action.widget_2].set_alignment(xalign=0)
                 time.sleep(SLEEP_TIME)
             j = 0
             for i in self.elems:
                 i.set_text(str(action.array[j]))
                 j = j+1
-            #self.elems[action.widget_1].gtk_entry_set_alignment(0.5)
-            #self.elems[action.widget_1].gtk_entry_set_alignment(0.5)
-            #if action.widget_1 != action.widget_2:
-            #    self.elems[action.widget_2].set_name("default")
+            time.sleep(SLEEP_TIME)
+            self.elems[action.widget_1].set_alignment(xalign=0.5)
+            self.elems[action.widget_2].set_alignment(xalign=0.5)
         if(action.event == COMPARED):
             if self.elems[action.widget_1].get_name() != "compared":
                 self.elems[action.widget_1].set_name("compared")
-            #for i in self.elems:
-            #    if(i.get_name() != "compared"):
-            #        i.set_name("default")
         if(action.event == DONE):
             for i in self.elems:
                 i.set_name("finished")
