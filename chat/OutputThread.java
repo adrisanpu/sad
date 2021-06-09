@@ -11,12 +11,12 @@ public class OutputThread extends Thread{
     @Override
     public void run() {
 	try{
+	    //entrada de servidor a client
 	    InputStream input = client.getInputStream();
        	    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-            OutputStream output = client.getOutputStream();
-            PrintWriter writer = new PrintWriter(output, true);
+	    //mostra missatges de servidor
 	    String line = "";
-            while ((line = reader.readLine()) != null) writer.println(line); //escriure missatge
+            while ((line = reader.readLine()) != null) System.out.println(line);
 	} catch (IOException e) { e.printStackTrace(); }
     } 
 

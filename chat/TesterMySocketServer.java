@@ -5,6 +5,8 @@ public class TesterMySocketServer{
 
     public static void main(String[] args) {
 	try {
+	    //per executar el servidor escriure a terminal:
+	    // java TesterMySocketServer 'PORT'
 	    int port = Integer.parseInt(args[0]);
 	    MyServerSocket server = new MyServerSocket(port);
 	    System.out.println("Server is listening on port " + port);

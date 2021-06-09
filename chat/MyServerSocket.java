@@ -4,7 +4,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.HashMap;
 
 public class MyServerSocket extends ServerSocket{
-
     public HashMap<String,MySocket> clients;
     private final ReentrantLock lock;
 
@@ -15,15 +14,12 @@ public class MyServerSocket extends ServerSocket{
     }
 
     public void addClient(String nick, MySocket client){
-	System.out.println("add test1");
 	lock.lock();
 	try{
-	    System.out.println("add test2");
 	    clients.put(nick, client);
 	}finally{
 	    lock.unlock();
 	}
-
     }
 
     public void removeClient(String nick){
@@ -33,7 +29,6 @@ public class MyServerSocket extends ServerSocket{
 	}finally{
 	    lock.unlock();
 	}
-
     }
 
     @Override
