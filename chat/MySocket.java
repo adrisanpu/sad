@@ -10,6 +10,7 @@ public class MySocket extends Socket{
 	nick = n;
 	message = new DataOutputStream(this.getOutputStream());
     }
+
     public MySocket() throws IOException{
 	super();
 	nick = "";
@@ -18,11 +19,6 @@ public class MySocket extends Socket{
 	
     public String getNick(){
 	return nick;
-    }
-
-    public void send(String line) throws IOException{
-	message.writeUTF(line);
-	//System.out.print("test1");
     }
 
 }

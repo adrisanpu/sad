@@ -10,9 +10,6 @@ public class TesterMySocket{
 	    MySocket client = new MySocket(args[0],host,port);
 	    System.out.println("client connecting to "+host+" in port "+Integer.toString(port));
 	    new InputThread(client).start();
-	    //OutputThread outputThread = new OutputThread(client.);
-	    //outputThread.start();
-	    //client.close();	    
 	} catch (IOException e) { e.printStackTrace(); 
 	} //catch (UnknownHostException e) { e.printStackTrace(); }
     }
