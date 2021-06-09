@@ -15,12 +15,12 @@ public class InputThread extends Thread{
        	    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 	    OutputStream output = socket.getOutputStream();
             PrintWriter writer = new PrintWriter(output, true);
-	    writer.println(socket.getNick()+ " connected.");
+	    writer.println("connected:"+socket.getNick());
 	    String line = "";
             while ((line = reader.readLine()) != null){
 	        writer.println(socket.getNick()+": " + line);
             }
-	    writer.println(socket.getNick()+" disconnected.");
+	    writer.println("disconnected:"+socket.getNick());
 	} catch (IOException e) { e.printStackTrace(); }
     } 
 

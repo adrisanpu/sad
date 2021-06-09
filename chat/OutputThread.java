@@ -1,25 +1,25 @@
-/*import java.io.*;  
+import java.io.*;  
 import java.net.*;  
 
 public class OutputThread extends Thread{
-    public MyServerSocket serverSocket;
+    public MySocket client;
 
-    public OutputThread(MyServerSocket s) {
-        serverSocket = s;
+    public OutputThread(MySocket c) {
+        client = c;
     }
 
     @Override
     public void run() {
 	try{
-	    InputStream input = socket.getInputStream();
+	    InputStream input = client.getInputStream();
        	    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-	    while ((line = reader.readline()) != null){
-	        String text = new String(output.toString());
-	        System.out.println("client: " + text);
-	    }
+            OutputStream output = client.getOutputStream();
+            PrintWriter writer = new PrintWriter(output, true);
+	    String line = "";
+            while ((line = reader.readLine()) != null) writer.println(line); //escriure missatge
 	} catch (IOException e) { e.printStackTrace(); }
     } 
 
 
 
-}*/
+}

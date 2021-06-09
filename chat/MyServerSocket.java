@@ -1,10 +1,39 @@
 import java.io.*;  
-import java.net.*;  
+import java.net.*;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.HashMap;
 
 public class MyServerSocket extends ServerSocket{
 
+    public HashMap<String,MySocket> clients;
+    private final ReentrantLock lock;
+
     public MyServerSocket(int p) throws IOException{
 	super(p);
+	clients = new HashMap<String,MySocket>();
+	lock = new ReentrantLock();
+    }
+
+    public void addClient(String nick, MySocket client){
+	System.out.println("add test1");
+	lock.lock();
+	try{
+	    System.out.println("add test2");
+	    clients.put(nick, client);
+	}finally{
+	    lock.unlock();
+	}
+
+    }
+
+    public void removeClient(String nick){
+	lock.lock();
+	try{
+	    clients.remove(nick);
+	}finally{
+	    lock.unlock();
+	}
+
     }
 
     @Override
