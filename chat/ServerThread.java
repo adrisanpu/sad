@@ -31,8 +31,8 @@ public class ServerThread extends Thread{
 	        //envia el missatge a tots els altres clients
 	        for (Map.Entry<String,MySocket> entry : server.clients.entrySet()) {
 		    if(!entry.getKey().equals(data[0])){
-		        OutputStream output = new DataOutputStream(entry.getValue().getOutputStream());
-    		        PrintWriter writer = new PrintWriter(output, true);
+			OutputStream output = new DataOutputStream(entry.getValue().getOutputStream());
+	        	PrintWriter writer = new PrintWriter(output, true);
 		        writer.println(line);
 		    }
 	        }	

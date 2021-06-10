@@ -16,7 +16,8 @@ public class ChatGUI {
 
     private static JTextField text;
     private static JButton button;
-    private static JTextArea messages;
+    public static JTextArea messages;
+    private static PrintWriter writer;
 
     public static void createAndShowGUI() {
         //Set the look and feel.
@@ -62,16 +63,18 @@ public class ChatGUI {
         frame.setVisible(true);
 
 	//new InputThread(client).start();
-	new OutputThread(client).start();
+	try{
+		OutputStream output = new DataOutputStream(client.getOutputStream());
+		writer = new PrintWriter(output, true);
+		writer.println("connected:"+client.getNick());
+	} catch (IOException e) { e.printStackTrace(); }
+	new OutputGUIThread(client, messages).start();
     }
 
     static class Listener implements ActionListener{
 	//makes the function of the inputThread()
 	@Override
 	public void actionPerformed(ActionEvent event){
-	    try{
-		OutputStream output = new DataOutputStream(client.getOutputStream());
-		PrintWriter writer = new PrintWriter(output, true);
 		String line = text.getText();
 		if(!line.equals("")){
 		    String messageToSend = client.getNick()+": " + line;
@@ -79,7 +82,6 @@ public class ChatGUI {
 		    messages.append(messageToSend+'\n');
 		}
 		text.setText("");
-	    } catch (IOException e) { e.printStackTrace(); }
 	}
     }
 
