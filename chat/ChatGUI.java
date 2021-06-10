@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.io.*;  
+import java.net.*;
 
 /**
  * general purpose powerful free layouts:
@@ -9,9 +11,14 @@ import javax.swing.*;
  * DesignGridLayout
  */
 
-public class ChatGUI implements ActionListener {
-    
-    private static void createAndShowGUI() {
+public class ChatGUI {
+    private static MySocket client;
+
+    private static JTextField text;
+    private static JButton button;
+    private static JTextArea messages;
+
+    public static void createAndShowGUI() {
         //Set the look and feel.
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -28,17 +35,22 @@ public class ChatGUI implements ActionListener {
         // Create an output JPanel and add a JTextArea(20, 30) inside a JScrollPane
         JPanel out = new JPanel();
         out.setLayout(new BoxLayout(out, BoxLayout.PAGE_AXIS));
-        JTextArea messages = new JTextArea(20,30);
+        messages = new JTextArea(20,30);
         messages.setEditable(false);
         out.add(new JScrollPane(messages));
         
         // Create an input JPanel and add a JTextField(25) and a JButton
         JPanel inp = new JPanel();
         inp.setLayout(new BoxLayout(inp, BoxLayout.LINE_AXIS));
-        JTextField text = new JTextField(25);
-        JButton button = new JButton("send");
+        text = new JTextField(25);
+        button = new JButton("send");
         inp.add(text);
         inp.add(button);
+	
+	//add actionListener to the button and the entry
+	Listener listener = new Listener();
+	button.addActionListener(listener);
+	text.addActionListener(listener);
 
         // add panels to main frame
         frame.add(out, BorderLayout.CENTER);
@@ -48,15 +60,37 @@ public class ChatGUI implements ActionListener {
         frame.pack();
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+
+	//new InputThread(client).start();
+	new OutputThread(client).start();
     }
 
-    @Override
-    public void actionPerformed(ActionEvent event){
-
-
+    static class Listener implements ActionListener{
+	//makes the function of the inputThread()
+	@Override
+	public void actionPerformed(ActionEvent event){
+	    try{
+		OutputStream output = new DataOutputStream(client.getOutputStream());
+		PrintWriter writer = new PrintWriter(output, true);
+		String line = text.getText();
+		if(!line.equals("")){
+		    String messageToSend = client.getNick()+": " + line;
+		    writer.println(messageToSend);
+		    messages.append(messageToSend+'\n');
+		}
+		text.setText("");
+	    } catch (IOException e) { e.printStackTrace(); }
+	}
     }
 
     public static void main(String[] args) {
+	try {
+	    //per executar el client escriure a terminal:
+	    // java ChatGUI 'NICK' localhost 'PORT'
+	    String host = args[1];
+	    int port = Integer.parseInt(args[2]);
+	    client = new MySocket(args[0],host,port);
+	} catch (IOException e) { e.printStackTrace();} 
         //Schedule a job for the event-dispatching thread:
         //creating and showing this application's GUI.
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
