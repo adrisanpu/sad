@@ -1,11 +1,14 @@
 import java.io.*;  
 import java.net.*;  
+import javax.swing.*;
 
-public class OutputThread extends Thread{
+public class OutputGUIThread extends Thread{
     public MySocket client;
+    public JTextArea messages;
 
-    public OutputThread(MySocket c) {
+    public OutputGUIThread(MySocket c, JTextArea m) {
         client = c;
+	messages = m;
     }
 
     @Override
@@ -16,7 +19,7 @@ public class OutputThread extends Thread{
        	    BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 	    //mostra missatges de servidor
 	    String line = "";
-            while ((line = reader.readLine()) != null) System.out.println(line);
+            while ((line = reader.readLine()) != null) messages.append(line+'\n');;
 	} catch (IOException e) { e.printStackTrace(); }
     } 
 
