@@ -1,14 +1,18 @@
 import java.io.*;  
-import java.net.*;  
+import java.net.*;
+import java.util.ArrayList;
+
 import javax.swing.*;
 
 public class OutputGUIThread extends Thread{
     public MySocket client;
     public JTextArea messages;
+    public ArrayList<String> users;
 
-    public OutputGUIThread(MySocket c, JTextArea m) {
+    public OutputGUIThread(MySocket c, JTextArea m, ArrayList<String> u) {
         client = c;
-	messages = m;
+	    messages = m;
+        users = u;
     }
 
     @Override

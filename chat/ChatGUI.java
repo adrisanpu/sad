@@ -1,6 +1,8 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.border.TitledBorder;
+import java.util.*;
 import java.io.*;  
 import java.net.*;
 
@@ -13,13 +15,22 @@ import java.net.*;
 
 public class ChatGUI {
     private static MySocket client;
-
+    private static ArrayList<String> users = new ArrayList<>();
     private static JTextField text;
     private static JButton button;
     public static JTextArea messages;
     private static PrintWriter writer;
 
+    private static JList userList;
+    private static DefaultListModel usernames;
+
     public static void createAndShowGUI() {
+        TitledBorder titleUsers = new TitledBorder("Users Online");
+        titleUsers.setTitleColor(new Color(91, 120, 25));
+        usernames = new DefaultListModel();
+        userList = new JList(usernames);
+        userList.setBorder(titleUsers);
+
         //Set the look and feel.
         try{
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -56,6 +67,7 @@ public class ChatGUI {
         // add panels to main frame
         frame.add(out, BorderLayout.CENTER);
         frame.add(inp, BorderLayout.PAGE_END);
+        frame.add(new JScrollPane(userList), BorderLayout.WEST);
         
         //Display the window centered.
         frame.pack();
@@ -68,7 +80,7 @@ public class ChatGUI {
 		writer = new PrintWriter(output, true);
 		writer.println("connected:"+client.getNick());
 	} catch (IOException e) { e.printStackTrace(); }
-	new OutputGUIThread(client, messages).start();
+	new OutputGUIThread(client, messages, users).start();
     }
 
     static class Listener implements ActionListener{
