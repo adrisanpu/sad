@@ -25,11 +25,13 @@ public class ChatGUI {
     private static DefaultListModel usernames;
 
     public static void createAndShowGUI() {
-        TitledBorder titleUsers = new TitledBorder("Users Online");
-        titleUsers.setTitleColor(new Color(91, 120, 25));
+        TitledBorder titleUsers = new TitledBorder("Online Users");
+        titleUsers.setTitleColor(new Color(0, 100, 100));
         usernames = new DefaultListModel();
+        usernames.addElement(client.getNick());
         userList = new JList(usernames);
         userList.setBorder(titleUsers);
+        userList.setPreferredSize(new Dimension(180,30));
 
         //Set the look and feel.
         try{
@@ -59,10 +61,10 @@ public class ChatGUI {
         inp.add(text);
         inp.add(button);
 	
-	//add actionListener to the button and the entry
-	Listener listener = new Listener();
-	button.addActionListener(listener);
-	text.addActionListener(listener);
+        //add actionListener to the button and the entry
+        Listener listener = new Listener();
+        button.addActionListener(listener);
+        text.addActionListener(listener);
 
         // add panels to main frame
         frame.add(out, BorderLayout.CENTER);
@@ -80,7 +82,7 @@ public class ChatGUI {
 		writer = new PrintWriter(output, true);
 		writer.println("connected:"+client.getNick());
 	} catch (IOException e) { e.printStackTrace(); }
-	new OutputGUIThread(client, messages, users).start();
+	    new OutputGUIThread(client, messages, users).start();
     }
 
     static class Listener implements ActionListener{
@@ -92,6 +94,14 @@ public class ChatGUI {
 		    String messageToSend = client.getNick()+": " + line;
 		    writer.println(messageToSend);
 		    messages.append(messageToSend+'\n');
+            String c = messages.getText();
+            if(!c.isEmpty()) {
+                String[] csplitted = c.split(":|\\\n");
+                for(int i=0;i<csplitted.length/2;i++) {
+                    if(!csplitted[2*i].equals("connected") && !usernames.contains(csplitted[2*i]))
+                        usernames.addElement(csplitted[2*i]);
+                }
+            }
 		}
 		text.setText("");
 	}
