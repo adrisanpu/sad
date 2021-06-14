@@ -26,7 +26,4 @@ public class OutputGUIThread extends Thread{
             while ((line = reader.readLine()) != null) messages.append(line+'\n');;
 	} catch (IOException e) { e.printStackTrace(); }
     } 
-
-
-
 }
